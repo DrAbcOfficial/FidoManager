@@ -50,7 +50,7 @@ public static class CborDecoder
                 0 => argument,                       // unsigned int
                 1 => -1 - argument,                  // negative int
                 2 => ReadBytes((int)argument),       // byte string
-                3 => Encoding.UTF8.GetString(ReadBytes((int)argument)), // text string
+                3 => ReadTextString((int)argument),  // text string
                 4 => ReadArray((int)argument),
                 5 => ReadMap((int)argument),
                 7 => info switch
@@ -62,6 +62,29 @@ public static class CborDecoder
                 },
                 _ => throw new FormatException($"Unsupported CBOR major type {major}"),
             };
+        }
+
+        /// <summary>
+        /// Decodes a text string, working around a stray-NUL firmware quirk: some CTAP 2.1
+        /// preview firmwares (observed on Feitian 096e:0853) emit "hmac-secret" with a
+        /// spurious 0x00 inserted before the last character while keeping the original
+        /// declared length, so the final character of the string leaks into the following
+        /// field and desynchronizes every later map entry. Spec-conformant encoders never
+        /// place an interior NUL in these strings; when one is seen, drop it from the value
+        /// and consume one extra stream byte (the leaked character) to realign the parse.
+        /// </summary>
+        private string ReadTextString(int length)
+        {
+            var bytes = ReadBytes(length);
+            int nul = Array.IndexOf(bytes, (byte)0);
+            if (nul < 0)
+            {
+                return System.Text.Encoding.UTF8.GetString(bytes);
+            }
+
+            Array.Copy(bytes, nul + 1, bytes, nul, length - nul - 1);
+            bytes[^1] = ReadByte();
+            return System.Text.Encoding.UTF8.GetString(bytes);
         }
 
         private byte ReadByte()
@@ -123,8 +146,25 @@ public static class CborDecoder
             var map = new Dictionary<object, object?>(count);
             for (int i = 0; i < count; i++)
             {
-                object key = ReadValue() ?? throw new FormatException("CBOR map key must not be null");
-                map[key] = ReadValue();
+                object key;
+                try
+                {
+                    key = ReadValue() ?? throw new FormatException("CBOR map key must not be null");
+                    // Normalize integer keys to int: decoders emit long, and lookups with
+                    // boxed int literals would otherwise silently miss (int 1 != long 1).
+                    if (key is long l and >= int.MinValue and <= int.MaxValue)
+                    {
+                        key = (int)l;
+                    }
+                    map[key] = ReadValue();
+                }
+                catch (FormatException)
+                {
+                    // Some preview-firmware keys truncate the final getInfo entries (observed:
+                    // algorithms' "public-key" short by one byte). Keep every entry decoded so
+                    // far — capabilities needed by the manager live in earlier entries.
+                    break;
+                }
             }
             return map;
         }

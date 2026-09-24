@@ -23,7 +23,10 @@ public sealed class ClientPinApi(Ctap2Connection connection, AuthenticatorInfo i
     private const byte SubGetPinTokenWithPermissions = 0x09;
 
     private readonly IPinUvAuthProtocol _protocol =
-        info.SupportsPinProtocol(PinUvAuthProtocolTwo.Instance.Version) ? PinUvAuthProtocolTwo.Instance
+        // CTAP 2.0 authenticators may omit pinUvAuthProtocols from getInfo entirely;
+        // the field's absence means protocol one (CTAP 2.0 spec, §6.5.5.1).
+        info.PinUvAuthProtocols.Count == 0 ? PinUvAuthProtocolOne.Instance
+        : info.SupportsPinProtocol(PinUvAuthProtocolTwo.Instance.Version) ? PinUvAuthProtocolTwo.Instance
         : info.SupportsPinProtocol(PinUvAuthProtocolOne.Instance.Version) ? PinUvAuthProtocolOne.Instance
         : throw new NotSupportedException("No compatible PIN/UV auth protocol.");
 

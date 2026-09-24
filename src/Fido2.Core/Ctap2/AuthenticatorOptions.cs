@@ -1,13 +1,91 @@
+using System.Text;
+
 namespace Fido2.Core.Ctap2;
 
 /// <summary>
 /// Strongly-typed view over the authenticatorGetInfo options map. The CTAP options map is
 /// the authoritative capability source — vendor config bits are not reliable across models
 /// (design doc §4.5) — and the UI enables/disables controls from these flags.
+///
+/// Some preview firmwares (observed on Feitian 096e:0853) corrupt option names with control
+/// bytes ("credentialMgmtPreview" → "credential\x01gmtPreview"). Lookups therefore normalize
+/// each received key (letters/digits only) and match the known option set by subsequence,
+/// which tolerates inserted or dropped characters. Exact matches always win, and the known
+/// set is closed, so spec-conformant keys resolve exactly as before.
 /// </summary>
-public sealed class AuthenticatorOptions(IReadOnlyDictionary<object, object?> map)
+public sealed class AuthenticatorOptions
 {
-    private bool? Get(string key) => map.TryGetValue(key, out var value) && value is bool b ? b : null;
+    public AuthenticatorOptions(IReadOnlyDictionary<object, object?> map)
+    {
+        Raw = map;
+    }
+
+    /// <summary>The raw options map, for diagnostics.</summary>
+    public IReadOnlyDictionary<object, object?> Raw { get; }
+
+    private static readonly string[] KnownOptions =
+    [
+        "clientPin", "uv", "bioEnroll", "userVerificationMgmtPreview", "credMgmt",
+        "credentialMgmtPreview", "alwaysUv", "authnrCfg", "setMinPINLength",
+        "pinUvAuthToken", "rk", "up", "plat", "makeCredUvNotRqd", "credProtect",
+        "largeBlobs", "enterpriseAttestation", "uvToken",
+    ];
+
+    private bool? Get(string key)
+    {
+        foreach (var (name, value) in Raw)
+        {
+            if (name is not string text)
+            {
+                continue;
+            }
+            if (Matches(text, key))
+            {
+                return value is bool b ? b : null;
+            }
+        }
+        return null;
+    }
+
+    private static bool Matches(string received, string wanted)
+    {
+        if (string.Equals(received, wanted, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        string a = Normalize(received);
+        string b = Normalize(wanted);
+        return a.Length >= b.Length - 2 && IsSubsequence(b, a);
+    }
+
+    private static string Normalize(string name)
+    {
+        var sb = new StringBuilder(name.Length);
+        foreach (var ch in name)
+        {
+            if (char.IsAsciiLetterOrDigit(ch))
+            {
+                sb.Append(char.ToLowerInvariant(ch));
+            }
+        }
+        return sb.ToString();
+    }
+
+    private static bool IsSubsequence(string wanted, string received)
+    {
+        // True when `received` can be obtained by deleting characters from `wanted`:
+        // iterate wanted, consuming received greedily.
+        int j = 0;
+        foreach (var ch in wanted)
+        {
+            if (j < received.Length && received[j] == ch)
+            {
+                j++;
+            }
+        }
+        return j == received.Length;
+    }
 
     public bool? ClientPin => Get("clientPin");
     public bool? Uv => Get("uv");
@@ -36,7 +114,7 @@ public sealed class AuthenticatorOptions(IReadOnlyDictionary<object, object?> ma
 
     public bool SupportsBioEnrollment => BioEnroll == true || UserVerificationMgmtPreview == true;
 
-    public string Summary => string.Join(" ", map
+    public string Summary => string.Join(" ", Raw
         .Select(kv => $"{kv.Key}={kv.Value}")
         .OrderBy(value => value, StringComparer.Ordinal));
 }

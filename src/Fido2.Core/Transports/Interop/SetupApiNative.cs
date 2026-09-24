@@ -16,7 +16,9 @@ internal static partial class SetupApiNative
         public IntPtr Reserved;
     }
 
-    [LibraryImport("setupapi.dll", SetLastError = true)]
+    // setupapi.dll exports only the suffixed SetupDiGetClassDevsA/W — entry points must
+    // be named explicitly ([LibraryImport] does not probe A/W variants at runtime).
+    [LibraryImport("setupapi.dll", SetLastError = true, EntryPoint = "SetupDiGetClassDevsA")]
     internal static partial IntPtr SetupDiGetClassDevs(
         in Guid classGuid,
         IntPtr enumerator,
@@ -32,7 +34,9 @@ internal static partial class SetupApiNative
         int memberIndex,
         ref SP_DEVICE_INTERFACE_DATA deviceInterfaceData);
 
-    [LibraryImport("setupapi.dll", SetLastError = true)]
+    // ANSI detail structure: fixed header size 8 (x64) / 6 (x86) must be written into
+    // cbSize, while the device path string starts at offset 4 — see HidDeviceEnumerator.
+    [LibraryImport("setupapi.dll", SetLastError = true, EntryPoint = "SetupDiGetDeviceInterfaceDetailA")]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static partial bool SetupDiGetDeviceInterfaceDetail(
         IntPtr deviceInfoSet,

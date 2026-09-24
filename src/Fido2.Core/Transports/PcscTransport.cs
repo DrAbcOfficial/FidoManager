@@ -63,12 +63,16 @@ public sealed class PcscTransport : ITokenTransport
     }
 
     /// <summary>Connects and SELECTs the FIDO applet. Returns null when the reader has no card
-    /// or the applet is absent — capability probing happens on first use, never assumed.</summary>
-    public static PcscTransport? TryOpen(string readerName)
+    /// or the applet is absent — capability probing happens on first use, never assumed.
+    /// <paramref name="openError"/> carries the failure reason (including the raw status word)
+    /// for diagnostics when null is returned.</summary>
+    public static PcscTransport? TryOpen(string readerName, out string? openError)
     {
+        openError = null;
         if (WinscardNative.SCardEstablishContext(WinscardNative.ScopeSystem, IntPtr.Zero, IntPtr.Zero, out var context)
             != WinscardNative.Success)
         {
+            openError = "SCardEstablishContext failed";
             return null;
         }
 
@@ -85,6 +89,7 @@ public sealed class PcscTransport : ITokenTransport
                 if (WinscardNative.SCardConnect(context, readerName, WinscardNative.ShareExclusive,
                         WinscardNative.ProtocolAny, out card, out protocol) != WinscardNative.Success)
                 {
+                    openError = "no card present (SCardConnect failed)";
                     _ = WinscardNative.SCardReleaseContext(context);
                     return null;
                 }
@@ -94,21 +99,25 @@ public sealed class PcscTransport : ITokenTransport
             var (data, sw) = transport.Exchange(BuildSelect(FidoAppletAid));
             if (sw != 0x9000)
             {
+                openError = $"FIDO applet SELECT refused, SW={sw:X4}";
                 transport.Dispose();
                 return null;
             }
             return transport;
         }
-        catch
+        catch (Exception ex)
         {
             if (card != IntPtr.Zero)
             {
                 _ = WinscardNative.SCardDisconnect(card, WinscardNative.DisconnectLeave);
             }
             _ = WinscardNative.SCardReleaseContext(context);
-            throw;
+            openError = ex.Message;
+            return null;
         }
     }
+
+    public static PcscTransport? TryOpen(string readerName) => TryOpen(readerName, out _);
 
     public byte[] Call(ReadOnlyMemory<byte> request, CancellationToken cancellationToken, IProgress<KeepaliveStatus>? progress)
     {

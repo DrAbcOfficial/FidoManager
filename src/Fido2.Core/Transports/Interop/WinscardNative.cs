@@ -31,10 +31,12 @@ internal static partial class WinscardNative
     [LibraryImport("winscard.dll")]
     internal static partial int SCardReleaseContext(IntPtr context);
 
-    [LibraryImport("winscard.dll")]
+    // winscard exports suffixed ANSI/wide variants for the string-taking functions;
+    // name them explicitly ([LibraryImport] resolves exact names only).
+    [LibraryImport("winscard.dll", EntryPoint = "SCardListReadersW", StringMarshalling = StringMarshalling.Utf16)]
     internal static partial int SCardListReaders(IntPtr context, IntPtr groups, byte[]? readers, ref int readersLength);
 
-    [LibraryImport("winscard.dll", StringMarshalling = StringMarshalling.Utf16)]
+    [LibraryImport("winscard.dll", EntryPoint = "SCardConnectW", StringMarshalling = StringMarshalling.Utf16)]
     internal static partial int SCardConnect(
         IntPtr context,
         string readerName,

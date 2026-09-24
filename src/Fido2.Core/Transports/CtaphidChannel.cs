@@ -117,7 +117,7 @@ public sealed class CtaphidChannel : IDisposable
 
         int length = (readBuffer[6] << 8) | readBuffer[7];
         var payload = new List<byte>(length);
-        payload.AddRange(readBuffer.AsSpan(8, 8 + Math.Min(_reportSizeIn - 7, length)).ToArray());
+        payload.AddRange(readBuffer.AsSpan(8, Math.Min(_reportSizeIn - 7, length)).ToArray());
 
         byte sequence = 0;
         while (payload.Count < length)
@@ -128,7 +128,7 @@ public sealed class CtaphidChannel : IDisposable
                 throw new TransportException("CTAPHID sequence mismatch during INIT.");
             }
             sequence++;
-            payload.AddRange(readBuffer.AsSpan(5, 5 + Math.Min(_reportSizeIn - 5, length - payload.Count)).ToArray());
+            payload.AddRange(readBuffer.AsSpan(5, Math.Min(_reportSizeIn - 5, length - payload.Count)).ToArray());
         }
         return [.. payload.Take(length)];
     }
@@ -212,7 +212,7 @@ public sealed class CtaphidChannel : IDisposable
 
                 expectedLength = (readBuffer[6] << 8) | readBuffer[7];
                 int initial = Math.Min(_reportSizeIn - 7, expectedLength);
-                response.AddRange(readBuffer.AsSpan(8, 8 + initial).ToArray());
+                response.AddRange(readBuffer.AsSpan(8, initial).ToArray());
             }
             else
             {
@@ -222,7 +222,7 @@ public sealed class CtaphidChannel : IDisposable
                 }
                 sequence++;
                 int remaining = expectedLength - response.Count;
-                response.AddRange(readBuffer.AsSpan(5, 5 + Math.Min(_reportSizeIn - 5, remaining)).ToArray());
+                response.AddRange(readBuffer.AsSpan(5, Math.Min(_reportSizeIn - 5, remaining)).ToArray());
             }
 
             if (response.Count >= expectedLength)

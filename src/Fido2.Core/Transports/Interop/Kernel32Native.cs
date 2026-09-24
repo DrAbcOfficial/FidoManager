@@ -13,7 +13,10 @@ internal static partial class Kernel32Native
     public const uint FileShareWrite = 0x00000002;
     public const uint OpenExisting = 3;
 
-    [LibraryImport("kernel32.dll", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    // Only CreateFileW/A exist as exports; the wide entry point is named explicitly
+    // ([LibraryImport] resolves exact names, no runtime A/W probing).
+    [LibraryImport("kernel32.dll", SetLastError = true, EntryPoint = "CreateFileW",
+        StringMarshalling = StringMarshalling.Utf16)]
     internal static partial SafeFileHandle CreateFile(
         string lpFileName,
         uint dwDesiredAccess,
