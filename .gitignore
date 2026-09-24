@@ -5,6 +5,10 @@
 [Ll]og/
 [Ll]ogs/
 
+# Python tooling artifacts (tools/*.py)
+__pycache__/
+*.pyc
+
 # Visual Studio / Rider / VS Code
 .vs/
 .vscode/
