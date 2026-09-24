@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="Fido2.Manager.Views.PolicyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Spacing="16" MaxWidth="760" HorizontalAlignment="Left">
+        <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}" TextWrapping="Wrap"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel Spacing="8">
+                <TextBlock Text="始终要求用户验证(alwaysUv)" FontSize="16" FontWeight="SemiBold" />
+                <TextBlock Text="每次断言都需要 PIN 或指纹,即使服务端未要求。此开关是否能在恢复出厂后保留取决于厂商。"
+                           TextWrapping="Wrap"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <Button Content="{x:Bind ViewModel.ToggleButtonText, Mode=OneWay}"
+                            Command="{x:Bind ViewModel.ToggleAlwaysUvCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanToggleAlwaysUv, Mode=OneWay}" />
+                    <TextBlock Text="{x:Bind ViewModel.AlwaysUvText, Mode=OneWay}" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel Spacing="8">
+                <TextBlock Text="最小 PIN 长度" FontSize="16" FontWeight="SemiBold" />
+                <TextBlock Text="提高钥匙接受的最短 PIN。只能调高 — 调回需要恢复出厂。若当前 PIN 短于新下限,钥匙会自行强制改 PIN。"
+                           TextWrapping="Wrap"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <NumberBox Value="{x:Bind ViewModel.MinPinLength, Mode=TwoWay}"
+                               Minimum="4" Maximum="63" SpinButtonPlacementMode="Compact" Width="140" />
+                    <Button Content="应用" Command="{x:Bind ViewModel.ApplyMinPinCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel Spacing="8">
+                <TextBlock Text="下次使用时强制改 PIN" FontSize="16" FontWeight="SemiBold" />
+                <TextBlock Text="当前 PIN 在更改前继续有效。适合在把钥匙交给他人之前使用。"
+                           TextWrapping="Wrap"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <Button Content="强制改 PIN" Command="{x:Bind ViewModel.ForcePinChangeCommand}"
+                        IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

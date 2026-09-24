@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="Fido2.Manager.Views.FingerprintsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctap="using:Fido2.Core.Ctap2">
+
+    <Grid RowSpacing="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="列出" Command="{x:Bind ViewModel.ListCommand}" />
+            <Button Content="录入新指纹" Command="{x:Bind ViewModel.EnrollCommand}"
+                    Style="{ThemeResource AccentButtonStyle}" />
+            <Button Content="重命名" Command="{x:Bind ViewModel.RenameCommand}"
+                    CommandParameter="{x:Bind BioList.SelectedItem, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.HasEnrollments, Mode=OneWay}" />
+            <Button Content="删除" Command="{x:Bind ViewModel.DeleteCommand}"
+                    CommandParameter="{x:Bind BioList.SelectedItem, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.HasEnrollments, Mode=OneWay}" />
+            <TextBlock Text="{x:Bind ViewModel.SensorText, Mode=OneWay}"
+                       VerticalAlignment="Center" Margin="12,0,0,0"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ProgressBar Grid.Row="1" IsIndeterminate="{x:Bind ViewModel.IsEnrolling, Mode=OneWay}"
+                     Visibility="{x:Bind ViewModel.EnrollProgressVisibility, Mode=OneWay}" />
+
+        <TextBlock Grid.Row="2" Text="{x:Bind ViewModel.EmptyText, Mode=OneWay}"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+
+        <ListView Grid.Row="3" x:Name="BioList"
+                  ItemsSource="{x:Bind ViewModel.Enrollments, Mode=OneWay}"
+                  SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="ctap:FingerprintEnrollment">
+                    <StackPanel Orientation="Horizontal" Spacing="12" Padding="0,4">
+                        <TextBlock Text="{x:Bind BestName}" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Bind TemplateIdHex}" FontSize="11" VerticalAlignment="Center"
+                                   Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                                   IsTextSelectionEnabled="True" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
