@@ -4,90 +4,157 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:views="using:Fido2.Manager.Views"
-    xmlns:services="using:Fido2.Manager.Services"
-    xmlns:local="using:Fido2.Manager">
+    xmlns:services="using:Fido2.Manager.Services">
 
-    <Grid>
+    <Grid x:Name="RootLayout">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- 提权横幅 -->
-        <Border x:Name="Banner" Background="#FCF8E3" Padding="12,8">
-            <TextBlock x:Name="BannerText" Foreground="#8A6D3B" TextWrapping="Wrap" />
-        </Border>
+        <!-- 标题栏:32px 紧凑高度,字幕显示当前设备 -->
+        <muxc:TitleBar x:Name="AppTitleBar" Grid.Row="0"
+                       Subtitle="{x:Bind ViewModel.DeviceSummary, Mode=OneWay}">
+            <muxc:TitleBar.IconSource>
+                <muxc:ImageIconSource ImageSource="ms-appx:///Assets/Logo.png" />
+            </muxc:TitleBar.IconSource>
+            <muxc:TitleBar.RightHeader>
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,8,0">
+                    <muxc:DropDownButton x:Name="LanguageButton" Height="28" Padding="8,0"
+                                         Background="Transparent" BorderThickness="0">
+                        <FontIcon Glyph="&#xE774;" FontSize="14" />
+                        <muxc:DropDownButton.Flyout>
+                            <muxc:MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <muxc:RadioMenuFlyoutItem x:Name="LanguageAutoItem" GroupName="Language"
+                                                          Click="LanguageItem_Click" />
+                                <muxc:RadioMenuFlyoutItem x:Name="LanguageZhItem" GroupName="Language"
+                                                          Click="LanguageItem_Click" />
+                                <muxc:RadioMenuFlyoutItem x:Name="LanguageEnItem" GroupName="Language"
+                                                          Click="LanguageItem_Click" />
+                            </muxc:MenuFlyout>
+                        </muxc:DropDownButton.Flyout>
+                    </muxc:DropDownButton>
+                </StackPanel>
+            </muxc:TitleBar.RightHeader>
+        </muxc:TitleBar>
 
-        <!-- 设备选择行 + 语言切换 -->
-        <Grid Grid.Row="1" Padding="12,8" ColumnSpacing="8"
-              Background="{ThemeResource LayerFillColorDefaultBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock x:Name="DeviceLabel" VerticalAlignment="Center" />
-            <ComboBox Grid.Column="1"
-                      ItemsSource="{x:Bind ViewModel.Devices}"
-                      SelectedItem="{x:Bind ViewModel.SelectedDevice, Mode=TwoWay}"
-                      HorizontalAlignment="Stretch">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="services:DeviceEntry">
-                        <TextBlock Text="{x:Bind DisplayName}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <muxc:ProgressRing Grid.Column="2" Width="22" Height="22"
-                               x:Name="BusyRing" IsActive="False" />
-            <Button Grid.Column="3" x:Name="RefreshButton" Command="{x:Bind ViewModel.RefreshCommand}"
-                    Style="{ThemeResource AccentButtonStyle}" />
-            <TextBlock Grid.Column="4" x:Name="LanguageLabel" VerticalAlignment="Center" />
-            <ComboBox Grid.Column="5" x:Name="LanguageCombo" Width="160"
-                      SelectionChanged="LanguageCombo_SelectionChanged"
-                      VerticalAlignment="Center">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:LanguageOption">
-                        <TextBlock Text="{x:Bind Label}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </Grid>
-
-        <!-- 功能页 -->
-        <muxc:NavigationView Grid.Row="2" x:Name="Nav"
-                             PaneDisplayMode="Top"
+        <!-- 左侧导航 + 内容卡片,沿用 WinUI 默认视觉 -->
+        <muxc:NavigationView Grid.Row="1" x:Name="Nav"
+                             PaneDisplayMode="Left"
+                             OpenPaneLength="184"
                              IsBackButtonVisible="Collapsed"
                              IsSettingsVisible="False"
+                             AlwaysShowHeader="False"
                              SelectionChanged="Nav_SelectionChanged">
+            <muxc:NavigationView.Resources>
+                <!-- 内容层用亚克力专用层色,让窗口的亚克力背景透出来 -->
+                <StaticResource x:Key="NavigationViewContentBackground"
+                                ResourceKey="LayerOnAcrylicFillColorDefaultBrush" />
+            </muxc:NavigationView.Resources>
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem x:Name="NavDeviceInfo" Tag="0" IsSelected="True" />
-                <muxc:NavigationViewItem x:Name="NavCredentials" Tag="1" />
-                <muxc:NavigationViewItem x:Name="NavFingerprints" Tag="2" />
-                <muxc:NavigationViewItem x:Name="NavPin" Tag="3" />
-                <muxc:NavigationViewItem x:Name="NavPolicy" Tag="4" />
-                <muxc:NavigationViewItem x:Name="NavReset" Tag="5" />
+                <muxc:NavigationViewItem x:Name="NavDeviceInfo" Tag="0" IsSelected="True">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7F8;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavCredentials" Tag="1">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8D7;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavFingerprints" Tag="2">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE928;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavPin" Tag="3">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE72E;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavPolicy" Tag="4">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem x:Name="NavReset" Tag="5">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE913;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
 
-            <Grid Padding="16,12">
-                <views:DeviceInfoPage x:Name="Page0" />
-                <views:CredentialsPage x:Name="Page1" Visibility="Collapsed" />
-                <views:FingerprintsPage x:Name="Page2" Visibility="Collapsed" />
-                <views:PinPage x:Name="Page3" Visibility="Collapsed" />
-                <views:PolicyPage x:Name="Page4" Visibility="Collapsed" />
-                <views:ResetPage x:Name="Page5" Visibility="Collapsed" />
+            <Grid Padding="20,14,20,18" RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Spacing="12">
+                    <muxc:InfoBar x:Name="ElevationBar" Severity="Warning" IsClosable="False"
+                                  IsOpen="{x:Bind ViewModel.ShowElevationWarning}"
+                                  Message="{x:Bind ViewModel.ElevationBanner}" />
+
+                    <!-- 设备选择:页面级工具条 -->
+                    <Border BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1" Padding="0,0,0,12">
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox x:Name="DeviceCombo" HorizontalAlignment="Left"
+                                      MinWidth="320" MaxWidth="440"
+                                      ItemsSource="{x:Bind ViewModel.Devices}"
+                                      SelectedItem="{x:Bind ViewModel.SelectedDevice, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="services:DeviceEntry">
+                                        <TextBlock Text="{x:Bind DisplayName}" TextTrimming="CharacterEllipsis" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Button x:Name="RefreshButton" Grid.Column="1"
+                                    Style="{StaticResource ToolIconButton}"
+                                    Command="{x:Bind ViewModel.RefreshCommand}">
+                                <FontIcon Glyph="&#xE72C;" FontSize="14" />
+                                <Button.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="R" Modifiers="Control" />
+                                </Button.KeyboardAccelerators>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <Grid Grid.Row="1" x:Name="PageHost">
+                    <views:DeviceInfoPage x:Name="Page0" />
+                    <views:CredentialsPage x:Name="Page1" Visibility="Collapsed" />
+                    <views:FingerprintsPage x:Name="Page2" Visibility="Collapsed" />
+                    <views:PinPage x:Name="Page3" Visibility="Collapsed" />
+                    <views:PolicyPage x:Name="Page4" Visibility="Collapsed" />
+                    <views:ResetPage x:Name="Page5" Visibility="Collapsed" />
+                </Grid>
             </Grid>
         </muxc:NavigationView>
 
         <!-- 状态条 -->
-        <Border Grid.Row="3" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="12,4">
-            <TextBlock x:Name="StatusText" TextWrapping="Wrap"
-                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        <Border Grid.Row="2" Padding="16,6"
+                Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <FontIcon x:Name="StatusErrorIcon" Glyph="&#xE783;" FontSize="12"
+                              Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                              Visibility="Collapsed" />
+                    <TextBlock x:Name="StatusText" Style="{StaticResource PageCaption}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                <muxc:ProgressRing x:Name="BusyRing" Width="16" Height="16"
+                                   HorizontalAlignment="Right" IsActive="False" />
+            </Grid>
         </Border>
     </Grid>
 </Window>

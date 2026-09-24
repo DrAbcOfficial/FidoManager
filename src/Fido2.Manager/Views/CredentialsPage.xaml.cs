@@ -11,7 +11,7 @@ public sealed partial class CredentialsPage : UserControl
     public CredentialsPage()
     {
         InitializeComponent();
-        ListButton.Content = Localization.Get("CredsListButton");
-        DeleteButton.Content = Localization.Get("CredsDeleteButton");
+        ListButtonText.Text = Localization.Get("CredsListButton");
+        DeleteButtonText.Text = Localization.Get("CredsDeleteButton");
     }
 }

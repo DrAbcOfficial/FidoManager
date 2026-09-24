@@ -24,6 +24,13 @@ public partial class PolicyViewModel : ObservableObject
     [ObservableProperty]
     public partial string AlwaysUvText { get; set; }
 
+    /// <summary>The state pill only makes sense once a device reported its policy.</summary>
+    public Microsoft.UI.Xaml.Visibility StateVisibility => string.IsNullOrEmpty(AlwaysUvText)
+        ? Microsoft.UI.Xaml.Visibility.Collapsed
+        : Microsoft.UI.Xaml.Visibility.Visible;
+
+    partial void OnAlwaysUvTextChanged(string value) => OnPropertyChanged(nameof(StateVisibility));
+
     [ObservableProperty]
     public partial string ToggleButtonText { get; set; }
 
@@ -43,6 +50,7 @@ public partial class PolicyViewModel : ObservableObject
         {
             StateText = Localization.Get("PolicyNoDevice");
             CanToggleAlwaysUv = CanSetMinPin = false;
+            AlwaysUvText = "";
             return;
         }
 

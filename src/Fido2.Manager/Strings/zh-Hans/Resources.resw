@@ -41,198 +41,199 @@
   </resheader>
 
   <!-- 通用 -->
-  <data name="AppTitle" xml:space="preserve"><value>FIDO2 管理工具</value></data>
+  <data name="AppTitle" xml:space="preserve"><value>FIDO2 管理器</value></data>
   <data name="StatusReady" xml:space="preserve"><value>就绪</value></data>
-  <data name="Unnamed" xml:space="preserve"><value>(未命名)</value></data>
+  <data name="Unnamed" xml:space="preserve"><value>未命名</value></data>
   <data name="CommonOk" xml:space="preserve"><value>确定</value></data>
   <data name="CommonCancel" xml:space="preserve"><value>取消</value></data>
   <data name="CommonConfirm" xml:space="preserve"><value>确认</value></data>
   <data name="CommonClose" xml:space="preserve"><value>关闭</value></data>
-  <data name="CommonApply" xml:space="preserve"><value>应用</value></data>
   <data name="NotifyTitleHint" xml:space="preserve"><value>提示</value></data>
-  <data name="PromptSelectDeviceFirst" xml:space="preserve"><value>请先选择设备。</value></data>
+  <data name="PromptSelectDeviceFirst" xml:space="preserve"><value>请先选择设备</value></data>
   <data name="On" xml:space="preserve"><value>开</value></data>
   <data name="Off" xml:space="preserve"><value>关</value></data>
 
   <!-- 主窗口 -->
-  <data name="DeviceLabel" xml:space="preserve"><value>设备:</value></data>
   <data name="RefreshButton" xml:space="preserve"><value>刷新</value></data>
-  <data name="NavDeviceInfo" xml:space="preserve"><value>设备信息</value></data>
+  <data name="NavDeviceInfo" xml:space="preserve"><value>设备</value></data>
   <data name="NavCredentials" xml:space="preserve"><value>凭据</value></data>
   <data name="NavFingerprints" xml:space="preserve"><value>指纹</value></data>
   <data name="NavPin" xml:space="preserve"><value>PIN</value></data>
   <data name="NavPolicy" xml:space="preserve"><value>策略</value></data>
-  <data name="NavReset" xml:space="preserve"><value>恢复出厂</value></data>
-  <data name="LanguageLabel" xml:space="preserve"><value>语言:</value></data>
-  <data name="LanguageAuto" xml:space="preserve"><value>自动(跟随系统)</value></data>
-  <data name="LanguageDialogTitle" xml:space="preserve"><value>语言设置</value></data>
-  <data name="LanguageRestartPrompt" xml:space="preserve"><value>语言设置将在重启应用后生效。要现在重启吗?</value></data>
+  <data name="NavReset" xml:space="preserve"><value>重置</value></data>
+  <data name="LanguageAuto" xml:space="preserve"><value>自动</value></data>
+  <data name="LanguageChinese" xml:space="preserve"><value>中文</value></data>
+  <data name="LanguageEnglish" xml:space="preserve"><value>English</value></data>
+  <data name="LanguageDialogTitle" xml:space="preserve"><value>语言</value></data>
+  <data name="LanguageRestartPrompt" xml:space="preserve"><value>重启后生效，现在重启？</value></data>
   <data name="RestartNow" xml:space="preserve"><value>立即重启</value></data>
   <data name="Later" xml:space="preserve"><value>稍后</value></data>
 
   <!-- 主视图模型 -->
-  <data name="BannerElevated" xml:space="preserve"><value>已以管理员身份运行 — 全部功能可用。</value></data>
-  <data name="BannerNotElevated" xml:space="preserve"><value>未提权 — USB HID 无法打开(0x5),请以管理员身份重新运行。</value></data>
+  <data name="BannerElevated" xml:space="preserve"><value>已以管理员身份运行</value></data>
+  <data name="BannerNotElevatedTitle" xml:space="preserve"><value>未以管理员身份运行</value></data>
+  <data name="BannerNotElevated" xml:space="preserve"><value>USB 钥匙不可用</value></data>
   <data name="ScanningDevices" xml:space="preserve"><value>正在扫描设备…</value></data>
   <data name="DevicesFound" xml:space="preserve"><value>找到 {0} 台设备</value></data>
-  <data name="SelectDevicePrompt" xml:space="preserve"><value>请选择设备</value></data>
-  <data name="NoDevicesFound" xml:space="preserve"><value>未找到设备 — 插入钥匙或将卡片放到 NFC 读卡器上</value></data>
-  <data name="ScanFailed" xml:space="preserve"><value>扫描失败:{0}</value></data>
+  <data name="SelectDevicePrompt" xml:space="preserve"><value>选择设备</value></data>
+  <data name="NoDevicesFound" xml:space="preserve"><value>未找到设备</value></data>
+  <data name="ScanFailed" xml:space="preserve"><value>扫描失败 · {0}</value></data>
   <data name="Connecting" xml:space="preserve"><value>正在连接 {0}…</value></data>
-  <data name="SerialNumberLabel" xml:space="preserve"><value>  串号 {0}</value></data>
+  <data name="SerialNumberLabel" xml:space="preserve"><value> · SN {0}</value></data>
   <data name="Connected" xml:space="preserve"><value>已连接</value></data>
   <data name="ConnectFailed" xml:space="preserve"><value>连接失败</value></data>
-  <data name="ConnectFailedWithReason" xml:space="preserve"><value>连接失败:{0}</value></data>
+  <data name="ConnectFailedWithReason" xml:space="preserve"><value>连接失败 · {0}</value></data>
 
   <!-- 设备信息页 -->
   <data name="NoDeviceSelected" xml:space="preserve"><value>未选择设备</value></data>
   <data name="RowDevice" xml:space="preserve"><value>设备</value></data>
-  <data name="RowSerialVendor" xml:space="preserve"><value>串号(厂商)</value></data>
+  <data name="RowSerialVendor" xml:space="preserve"><value>串号</value></data>
   <data name="RowVersions" xml:space="preserve"><value>版本</value></data>
   <data name="RowExtensions" xml:space="preserve"><value>扩展</value></data>
-  <data name="RowMaxMessageSize" xml:space="preserve"><value>最大消息大小</value></data>
+  <data name="RowMaxMessageSize" xml:space="preserve"><value>最大消息</value></data>
   <data name="BytesValue" xml:space="preserve"><value>{0} 字节</value></data>
   <data name="RowPinProtocol" xml:space="preserve"><value>PIN 协议</value></data>
-  <data name="RowMinPinLength" xml:space="preserve"><value>最小 PIN 长度</value></data>
-  <data name="RowFirmwareVersion" xml:space="preserve"><value>固件版本</value></data>
+  <data name="RowMinPinLength" xml:space="preserve"><value>最小 PIN</value></data>
+  <data name="RowFirmwareVersion" xml:space="preserve"><value>固件</value></data>
   <data name="RowTransport" xml:space="preserve"><value>传输</value></data>
   <data name="RowPin" xml:space="preserve"><value>PIN</value></data>
-  <data name="PinSetWithRetries" xml:space="preserve"><value>已设置(剩余 {0} 次重试)</value></data>
+  <data name="PinSetWithRetries" xml:space="preserve"><value>已设置 · 剩余 {0} 次</value></data>
   <data name="PinNotSet" xml:space="preserve"><value>未设置</value></data>
   <data name="RowCapabilities" xml:space="preserve"><value>能力</value></data>
-  <data name="CapPinSet" xml:space="preserve"><value>PIN 已设置</value></data>
+  <data name="CapPinSet" xml:space="preserve"><value>PIN</value></data>
   <data name="CapNoPin" xml:space="preserve"><value>无 PIN</value></data>
   <data name="CapFingerprint" xml:space="preserve"><value>指纹</value></data>
   <data name="CapCredentialMgmt" xml:space="preserve"><value>凭据管理</value></data>
   <data name="CapAuthnrConfig" xml:space="preserve"><value>策略配置</value></data>
   <data name="CapForcePinChange" xml:space="preserve"><value>要求改 PIN</value></data>
   <data name="DeviceInfoLoaded" xml:space="preserve"><value>设备信息已加载</value></data>
-  <data name="DeviceInfoFailed" xml:space="preserve"><value>读取设备信息失败:{0}</value></data>
+  <data name="DeviceInfoFailed" xml:space="preserve"><value>读取失败 · {0}</value></data>
 
   <!-- 凭据页 -->
   <data name="CredsListButton" xml:space="preserve"><value>列出凭据</value></data>
-  <data name="CredsDeleteButton" xml:space="preserve"><value>删除选中</value></data>
-  <data name="CredsNotLoaded" xml:space="preserve"><value>尚未加载。点击“列出凭据” — 将需要 PIN。</value></data>
-  <data name="CredsNeedPin" xml:space="preserve"><value>列出凭据需要 PIN。</value></data>
+  <data name="CredsDeleteButton" xml:space="preserve"><value>删除</value></data>
+  <data name="CredsNotLoaded" xml:space="preserve"><value>未加载</value></data>
+  <data name="CredsNeedPin" xml:space="preserve"><value>列出凭据</value></data>
   <data name="CredsUnsupportedTitle" xml:space="preserve"><value>不支持</value></data>
-  <data name="CredsUnsupportedMessage" xml:space="preserve"><value>这把钥匙没有提供凭据管理 API。</value></data>
-  <data name="ReadingCredentials" xml:space="preserve"><value>正在读取凭据…</value></data>
-  <data name="CredsStoredFree" xml:space="preserve"><value>已存 {0}    剩余可存 {1}</value></data>
+  <data name="CredsUnsupportedMessage" xml:space="preserve"><value>此钥匙无凭据管理功能</value></data>
+  <data name="ReadingCredentials" xml:space="preserve"><value>正在读取…</value></data>
+  <data name="CredsStoredFree" xml:space="preserve"><value>已存 {0} · 剩余 {1}</value></data>
   <data name="CredsStored" xml:space="preserve"><value>已存 {0}</value></data>
-  <data name="NoResidentCredentials" xml:space="preserve"><value>这把钥匙上没有可发现( resident )凭据。</value></data>
-  <data name="CredentialsListed" xml:space="preserve"><value>共 {0} 条凭据</value></data>
+  <data name="NoResidentCredentials" xml:space="preserve"><value>无凭据</value></data>
+  <data name="CredentialsListed" xml:space="preserve"><value>{0} 条凭据</value></data>
   <data name="DeleteCredentialTitle" xml:space="preserve"><value>删除凭据</value></data>
-  <data name="DeleteCredentialConfirm" xml:space="preserve"><value>删除这条凭据?&#10;&#10;{0} / {1}&#10;&#10;此操作不可撤销。</value></data>
-  <data name="DeleteCredentialNeedPin" xml:space="preserve"><value>删除凭据需要 PIN。</value></data>
-  <data name="DeletingCredential" xml:space="preserve"><value>正在删除凭据…</value></data>
-  <data name="CredentialDeleted" xml:space="preserve"><value>凭据已删除</value></data>
+  <data name="DeleteCredentialConfirm" xml:space="preserve"><value>删除此凭据？&#10;&#10;{0} / {1}&#10;&#10;不可撤销</value></data>
+  <data name="DeleteCredentialNeedPin" xml:space="preserve"><value>删除凭据</value></data>
+  <data name="DeletingCredential" xml:space="preserve"><value>正在删除…</value></data>
+  <data name="CredentialDeleted" xml:space="preserve"><value>已删除</value></data>
 
   <!-- 指纹页 -->
   <data name="BioListButton" xml:space="preserve"><value>列出</value></data>
-  <data name="BioEnrollButton" xml:space="preserve"><value>录入新指纹</value></data>
+  <data name="BioEnrollButton" xml:space="preserve"><value>录入</value></data>
   <data name="BioRenameButton" xml:space="preserve"><value>重命名</value></data>
   <data name="BioDeleteButton" xml:space="preserve"><value>删除</value></data>
-  <data name="BioNotLoaded" xml:space="preserve"><value>尚未加载。点击“列出” — 将需要 PIN。</value></data>
-  <data name="NoBioSensor" xml:space="preserve"><value>这把钥匙没有指纹传感器(getInfo 未提供 bioEnroll)。</value></data>
-  <data name="BioListNeedPin" xml:space="preserve"><value>列出指纹需要 PIN。</value></data>
-  <data name="NoFingerprints" xml:space="preserve"><value>这把钥匙上没有指纹。</value></data>
-  <data name="FingerprintsListed" xml:space="preserve"><value>共 {0} 枚指纹</value></data>
+  <data name="BioNotLoaded" xml:space="preserve"><value>未加载</value></data>
+  <data name="NoBioSensor" xml:space="preserve"><value>此钥匙无指纹传感器</value></data>
+  <data name="BioListNeedPin" xml:space="preserve"><value>列出指纹</value></data>
+  <data name="NoFingerprints" xml:space="preserve"><value>无指纹</value></data>
+  <data name="FingerprintsListed" xml:space="preserve"><value>{0} 枚指纹</value></data>
   <data name="EnrollTitle" xml:space="preserve"><value>录入指纹</value></data>
-  <data name="EnrollNamePrompt" xml:space="preserve"><value>为这根手指命名(可选):</value></data>
-  <data name="EnrollNeedPin" xml:space="preserve"><value>录入指纹需要 PIN。</value></data>
+  <data name="EnrollNamePrompt" xml:space="preserve"><value>名称</value></data>
+  <data name="EnrollNeedPin" xml:space="preserve"><value>录入指纹</value></data>
   <data name="EnrollWaitFirstTouch" xml:space="preserve"><value>等待第一次触摸…</value></data>
-  <data name="EnrollInstruction" xml:space="preserve"><value>反复触摸传感器,直到录入完成。</value></data>
-  <data name="EnrollingTitle" xml:space="preserve"><value>正在录入指纹</value></data>
-  <data name="Enrolling" xml:space="preserve"><value>正在录入指纹…</value></data>
+  <data name="EnrollInstruction" xml:space="preserve"><value>反复触摸传感器</value></data>
+  <data name="EnrollingTitle" xml:space="preserve"><value>正在录入</value></data>
+  <data name="Enrolling" xml:space="preserve"><value>正在录入…</value></data>
   <data name="TouchSensor" xml:space="preserve"><value>请触摸传感器…</value></data>
-  <data name="SampleProgress" xml:space="preserve"><value>{0} — 还需 {1} 次</value></data>
-  <data name="Enrolled" xml:space="preserve"><value>指纹已录入({0})</value></data>
-  <data name="EnrollCanceled" xml:space="preserve"><value>录入已取消</value></data>
-  <data name="RenameTitle" xml:space="preserve"><value>重命名指纹</value></data>
-  <data name="RenamePrompt" xml:space="preserve"><value>新名称:</value></data>
-  <data name="RenameNeedPin" xml:space="preserve"><value>重命名需要 PIN。</value></data>
+  <data name="SampleProgress" xml:space="preserve"><value>{0} · 还需 {1} 次</value></data>
+  <data name="Enrolled" xml:space="preserve"><value>已录入 {0}</value></data>
+  <data name="EnrollCanceled" xml:space="preserve"><value>已取消</value></data>
+  <data name="RenameTitle" xml:space="preserve"><value>重命名</value></data>
+  <data name="RenamePrompt" xml:space="preserve"><value>新名称</value></data>
+  <data name="RenameNeedPin" xml:space="preserve"><value>重命名</value></data>
   <data name="Renamed" xml:space="preserve"><value>已重命名</value></data>
   <data name="DeleteFingerprintTitle" xml:space="preserve"><value>删除指纹</value></data>
-  <data name="DeleteFingerprintConfirm" xml:space="preserve"><value>删除这枚指纹?&#10;&#10;{0}&#10;&#10;此操作不可撤销。</value></data>
-  <data name="DeleteFingerprintNeedPin" xml:space="preserve"><value>删除指纹需要 PIN。</value></data>
-  <data name="FingerprintDeleted" xml:space="preserve"><value>指纹已删除</value></data>
-  <data name="BioSample00" xml:space="preserve"><value>样本良好,已采集。</value></data>
-  <data name="BioSample01" xml:space="preserve"><value>样本偏上或不完整 — 请重试。</value></data>
-  <data name="BioSample02" xml:space="preserve"><value>样本偏下或不完整 — 请重试。</value></data>
-  <data name="BioSample03" xml:space="preserve"><value>样本不完整 — 请将手指对准传感器中央。</value></data>
-  <data name="BioSample04" xml:space="preserve"><value>失败次数过多 — 录入可能需要重新开始。</value></data>
-  <data name="BioSample05" xml:space="preserve"><value>样本质量差 — 请清洁传感器和手指后重试。</value></data>
-  <data name="BioSample06" xml:space="preserve"><value>与上一个样本太接近 — 请调整手指位置。</value></data>
-  <data name="BioSample07" xml:space="preserve"><value>传感器超时 — 请触摸传感器。</value></data>
-  <data name="BioSampleOther" xml:space="preserve"><value>请重新采集。</value></data>
+  <data name="DeleteFingerprintConfirm" xml:space="preserve"><value>删除此指纹？&#10;&#10;{0}&#10;&#10;不可撤销</value></data>
+  <data name="DeleteFingerprintNeedPin" xml:space="preserve"><value>删除指纹</value></data>
+  <data name="FingerprintDeleted" xml:space="preserve"><value>已删除</value></data>
+  <data name="BioSample00" xml:space="preserve"><value>样本良好</value></data>
+  <data name="BioSample01" xml:space="preserve"><value>偏上或不完整 · 重试</value></data>
+  <data name="BioSample02" xml:space="preserve"><value>偏下或不完整 · 重试</value></data>
+  <data name="BioSample03" xml:space="preserve"><value>不完整 · 对准传感器中心</value></data>
+  <data name="BioSample04" xml:space="preserve"><value>失败过多 · 建议重新录入</value></data>
+  <data name="BioSample05" xml:space="preserve"><value>质量差 · 清洁后重试</value></data>
+  <data name="BioSample06" xml:space="preserve"><value>与上一枚太接近 · 调整位置</value></data>
+  <data name="BioSample07" xml:space="preserve"><value>超时 · 请触摸传感器</value></data>
+  <data name="BioSampleOther" xml:space="preserve"><value>请重试</value></data>
 
   <!-- PIN 页 -->
-  <data name="PinCheckButton" xml:space="preserve"><value>检查 PIN 状态</value></data>
-  <data name="PinCurrentLabel" xml:space="preserve"><value>当前 PIN:</value></data>
-  <data name="PinNewLabel" xml:space="preserve"><value>新 PIN(4–63 字节):</value></data>
-  <data name="PinConfirmLabel" xml:space="preserve"><value>确认新 PIN:</value></data>
+  <data name="PinCheckButton" xml:space="preserve"><value>检查</value></data>
+  <data name="PinCurrentLabel" xml:space="preserve"><value>当前 PIN</value></data>
+  <data name="PinNewLabel" xml:space="preserve"><value>新 PIN</value></data>
+  <data name="PinNewHint" xml:space="preserve"><value>4–63 字节</value></data>
+  <data name="PinConfirmLabel" xml:space="preserve"><value>确认新 PIN</value></data>
   <data name="PinApplyButton" xml:space="preserve"><value>应用</value></data>
-  <data name="PinInitialState" xml:space="preserve"><value>选择设备后点击“检查”。</value></data>
-  <data name="PinNotSetFirstTime" xml:space="preserve"><value>未设置 PIN。“当前 PIN”留空即为首次设置。</value></data>
+  <data name="PinInitialState" xml:space="preserve"><value>选择设备后检查</value></data>
+  <data name="PinNotSetFirstTime" xml:space="preserve"><value>未设置 · 当前 PIN 留空即可</value></data>
   <data name="PinStateChecked" xml:space="preserve"><value>PIN 状态已检查</value></data>
   <data name="PinMismatchTitle" xml:space="preserve"><value>PIN 不一致</value></data>
-  <data name="PinMismatchMessage" xml:space="preserve"><value>两次输入的新 PIN 不相同。</value></data>
+  <data name="PinMismatchMessage" xml:space="preserve"><value>两次输入的新 PIN 不同</value></data>
   <data name="PinTooShortTitle" xml:space="preserve"><value>PIN 太短</value></data>
-  <data name="PinTooShortMessage" xml:space="preserve"><value>PIN 至少需要 4 个字节。</value></data>
+  <data name="PinTooShortMessage" xml:space="preserve"><value>至少 4 字节</value></data>
   <data name="PinCurrentRequiredTitle" xml:space="preserve"><value>缺少当前 PIN</value></data>
-  <data name="PinCurrentRequiredMessage" xml:space="preserve"><value>钥匙已设置 PIN,修改需要当前 PIN。</value></data>
-  <data name="ChangingPin" xml:space="preserve"><value>正在修改 PIN…</value></data>
-  <data name="SettingPin" xml:space="preserve"><value>正在设置 PIN…</value></data>
+  <data name="PinCurrentRequiredMessage" xml:space="preserve"><value>钥匙已设置 PIN，修改需填写当前 PIN</value></data>
+  <data name="ChangingPin" xml:space="preserve"><value>正在修改…</value></data>
+  <data name="SettingPin" xml:space="preserve"><value>正在设置…</value></data>
   <data name="PinChanged" xml:space="preserve"><value>PIN 已修改</value></data>
   <data name="PinSet" xml:space="preserve"><value>PIN 已设置</value></data>
 
   <!-- 策略页 -->
-  <data name="PolicyAlwaysUvTitle" xml:space="preserve"><value>始终要求用户验证(alwaysUv)</value></data>
-  <data name="PolicyAlwaysUvDesc" xml:space="preserve"><value>每次断言都需要 PIN 或指纹,即使服务端未要求。此开关是否能在恢复出厂后保留取决于厂商。</value></data>
+  <data name="PolicyAlwaysUvTitle" xml:space="preserve"><value>始终验证</value></data>
+  <data name="PolicyAlwaysUvDesc" xml:space="preserve"><value>每次验证都要求 PIN 或指纹</value></data>
   <data name="PolicyMinPinTitle" xml:space="preserve"><value>最小 PIN 长度</value></data>
-  <data name="PolicyMinPinDesc" xml:space="preserve"><value>提高钥匙接受的最短 PIN。只能调高 — 调回需要恢复出厂。若当前 PIN 短于新下限,钥匙会自行强制改 PIN。</value></data>
+  <data name="PolicyMinPinDesc" xml:space="preserve"><value>只能调高，调回需恢复出厂</value></data>
   <data name="PolicyApplyMinPinButton" xml:space="preserve"><value>应用</value></data>
-  <data name="PolicyForceChangeTitle" xml:space="preserve"><value>下次使用时强制改 PIN</value></data>
-  <data name="PolicyForceChangeDesc" xml:space="preserve"><value>当前 PIN 在更改前继续有效。适合在把钥匙交给他人之前使用。</value></data>
+  <data name="PolicyForceChangeTitle" xml:space="preserve"><value>下次强制改 PIN</value></data>
+  <data name="PolicyForceChangeDesc" xml:space="preserve"><value>当前 PIN 更改前仍有效</value></data>
   <data name="PolicyForceChangeButton" xml:space="preserve"><value>强制改 PIN</value></data>
-  <data name="PolicyInitialState" xml:space="preserve"><value>选择设备后加载策略状态。</value></data>
+  <data name="PolicyInitialState" xml:space="preserve"><value>选择设备后加载策略</value></data>
   <data name="ToggleButtonDefault" xml:space="preserve"><value>切换</value></data>
-  <data name="PolicyNoDevice" xml:space="preserve"><value>未选择设备。</value></data>
-  <data name="AlwaysUvCurrentlyOn" xml:space="preserve"><value>当前:开</value></data>
-  <data name="AlwaysUvCurrentlyOff" xml:space="preserve"><value>当前:关</value></data>
-  <data name="AlwaysUvUnreported" xml:space="preserve"><value>当前:未报告</value></data>
-  <data name="DisableAlwaysUv" xml:space="preserve"><value>关闭 alwaysUv</value></data>
-  <data name="EnableAlwaysUv" xml:space="preserve"><value>开启 alwaysUv</value></data>
-  <data name="PolicyConfigSupported" xml:space="preserve"><value>此钥匙支持 authenticatorConfig。</value></data>
-  <data name="PolicyConfigNoSetMinPin" xml:space="preserve"><value>此钥匙支持 authenticatorConfig,但不含 setMinPINLength — 长度控件不可用。</value></data>
-  <data name="PolicyConfigUnsupported" xml:space="preserve"><value>此钥匙不提供 authenticatorConfig — 策略修改不可用。</value></data>
-  <data name="AlwaysUvNeedPin" xml:space="preserve"><value>修改 alwaysUv 需要 PIN。</value></data>
-  <data name="TogglingAlwaysUv" xml:space="preserve"><value>正在切换 alwaysUv…</value></data>
-  <data name="AlwaysUvNow" xml:space="preserve"><value>alwaysUv 现在为 {0}</value></data>
+  <data name="PolicyNoDevice" xml:space="preserve"><value>未选择设备</value></data>
+  <data name="AlwaysUvCurrentlyOn" xml:space="preserve"><value>当前 开</value></data>
+  <data name="AlwaysUvCurrentlyOff" xml:space="preserve"><value>当前 关</value></data>
+  <data name="AlwaysUvUnreported" xml:space="preserve"><value>当前 未报告</value></data>
+  <data name="DisableAlwaysUv" xml:space="preserve"><value>关闭</value></data>
+  <data name="EnableAlwaysUv" xml:space="preserve"><value>开启</value></data>
+  <data name="PolicyConfigSupported" xml:space="preserve"><value>支持策略配置</value></data>
+  <data name="PolicyConfigNoSetMinPin" xml:space="preserve"><value>不支持修改最小 PIN 长度</value></data>
+  <data name="PolicyConfigUnsupported" xml:space="preserve"><value>不支持策略配置</value></data>
+  <data name="AlwaysUvNeedPin" xml:space="preserve"><value>修改 alwaysUv</value></data>
+  <data name="TogglingAlwaysUv" xml:space="preserve"><value>正在切换…</value></data>
+  <data name="AlwaysUvNow" xml:space="preserve"><value>alwaysUv 已{0}</value></data>
   <data name="RaiseMinPinTitle" xml:space="preserve"><value>提高最小 PIN 长度</value></data>
-  <data name="RaiseMinPinConfirm" xml:space="preserve"><value>将最小 PIN 长度提高到 {0}?&#10;&#10;此设置只能调高 — 调回必须恢复出厂(清空所有凭据)。</value></data>
-  <data name="MinPinNeedPin" xml:space="preserve"><value>修改最小 PIN 长度需要 PIN。</value></data>
-  <data name="SettingMinPin" xml:space="preserve"><value>正在设置最小 PIN 长度…</value></data>
-  <data name="MinPinNow" xml:space="preserve"><value>最小 PIN 长度现为 {0}</value></data>
-  <data name="ForcePinChangeTitle" xml:space="preserve"><value>强制下次改 PIN</value></data>
-  <data name="ForcePinChangeConfirm" xml:space="preserve"><value>下次使用此钥匙时必须设置新的 PIN。适合在转交钥匙前使用。</value></data>
-  <data name="ForcePinChangeNeedPin" xml:space="preserve"><value>强制改 PIN 需要 PIN。</value></data>
-  <data name="ForcePinChangeSet" xml:space="preserve"><value>已设置:下次使用时强制改 PIN</value></data>
+  <data name="RaiseMinPinConfirm" xml:space="preserve"><value>提高到 {0}？&#10;&#10;只能调高，调回需恢复出厂</value></data>
+  <data name="MinPinNeedPin" xml:space="preserve"><value>修改最小 PIN 长度</value></data>
+  <data name="SettingMinPin" xml:space="preserve"><value>正在设置…</value></data>
+  <data name="MinPinNow" xml:space="preserve"><value>最小 PIN 长度 {0}</value></data>
+  <data name="ForcePinChangeTitle" xml:space="preserve"><value>强制改 PIN</value></data>
+  <data name="ForcePinChangeConfirm" xml:space="preserve"><value>下次使用此钥匙时必须设置新 PIN</value></data>
+  <data name="ForcePinChangeNeedPin" xml:space="preserve"><value>强制改 PIN</value></data>
+  <data name="ForcePinChangeSet" xml:space="preserve"><value>已设置：下次使用时强制改 PIN</value></data>
 
   <!-- 恢复出厂页 -->
-  <data name="ResetWarningMain" xml:space="preserve"><value>恢复出厂将清空此钥匙上的全部 passkey 与 PIN,此操作不可撤销。</value></data>
-  <data name="ResetWarningCritical" xml:space="preserve"><value>请务必先拔插钥匙。</value></data>
-  <data name="ResetWindowHint" xml:space="preserve"><value>钥匙只在上电后约 10 秒内接受重置:请先拔下再插回(或从 NFC 感应区移开再放回),然后立即点击下面的按钮。</value></data>
+  <data name="ResetWarningMain" xml:space="preserve"><value>将清空全部凭据与 PIN，不可撤销</value></data>
+  <data name="ResetWarningCritical" xml:space="preserve"><value>请先拔下钥匙</value></data>
+  <data name="ResetWindowHint" xml:space="preserve"><value>重置仅在上电后 10 秒内有效：插回后立即点击下方按钮</value></data>
   <data name="ResetButton" xml:space="preserve"><value>恢复出厂设置</value></data>
   <data name="ResetTitle" xml:space="preserve"><value>恢复出厂设置</value></data>
-  <data name="ResetConfirm" xml:space="preserve"><value>恢复出厂会清空此钥匙上的全部 passkey 与 PIN,且不可撤销。&#10;&#10;钥匙只在上电后约 10 秒内接受重置:请先拔下再插回(或从 NFC 感应区移开再放回),然后立即点击“确认”。&#10;&#10;确定继续?</value></data>
-  <data name="Resetting" xml:space="preserve"><value>正在恢复出厂…</value></data>
-  <data name="ResetDone" xml:space="preserve"><value>已恢复出厂。全部凭据与 PIN 已清除。</value></data>
+  <data name="ResetConfirm" xml:space="preserve"><value>将清空全部凭据与 PIN，不可撤销。&#10;&#10;重置仅在上电后 10 秒内有效：插回后立即确认。&#10;&#10;继续？</value></data>
+  <data name="Resetting" xml:space="preserve"><value>正在恢复…</value></data>
+  <data name="ResetDone" xml:space="preserve"><value>已恢复出厂</value></data>
 
   <!-- PIN 对话框 -->
   <data name="PinDialogTitle" xml:space="preserve"><value>需要 PIN</value></data>
-  <data name="RememberPinThisSession" xml:space="preserve"><value>本次会话内记住(不落盘)</value></data>
+  <data name="RememberPinThisSession" xml:space="preserve"><value>本次会话记住</value></data>
 
   <!-- 设备枚举 -->
-  <data name="NoCardOnReader" xml:space="preserve"><value>读卡器 {0} 上没有卡片。</value></data>
+  <data name="NoCardOnReader" xml:space="preserve"><value>读卡器 {0} 无卡片</value></data>
 </root>

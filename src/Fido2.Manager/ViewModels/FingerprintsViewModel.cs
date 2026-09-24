@@ -33,11 +33,22 @@ public partial class FingerprintsViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsEnrolling { get; set; }
 
+    /// <summary>Drives the "no sensor" InfoBar.</summary>
+    [ObservableProperty]
+    public partial bool ShowSensorWarning { get; set; }
+
     public Microsoft.UI.Xaml.Visibility EnrollProgressVisibility =>
         IsEnrolling ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
 
+    /// <summary>The list itself stays empty — this drives the centered placeholder instead.</summary>
+    public Microsoft.UI.Xaml.Visibility EmptyVisibility => string.IsNullOrEmpty(EmptyText)
+        ? Microsoft.UI.Xaml.Visibility.Collapsed
+        : Microsoft.UI.Xaml.Visibility.Visible;
+
     partial void OnIsEnrollingChanged(bool value) =>
         OnPropertyChanged(nameof(EnrollProgressVisibility));
+
+    partial void OnEmptyTextChanged(string value) => OnPropertyChanged(nameof(EmptyVisibility));
 
     public async Task OnSessionOpenedAsync()
     {
@@ -49,10 +60,12 @@ public partial class FingerprintsViewModel : ObservableObject
         if (session.Options.SupportsBioEnrollment)
         {
             SensorText = "";
+            ShowSensorWarning = false;
         }
         else
         {
             SensorText = Localization.Get("NoBioSensor");
+            ShowSensorWarning = true;
         }
     }
 
@@ -69,6 +82,7 @@ public partial class FingerprintsViewModel : ObservableObject
         if (!session.Options.SupportsBioEnrollment)
         {
             SensorText = Localization.Get("NoBioSensor");
+            ShowSensorWarning = true;
             return;
         }
 

@@ -27,29 +27,23 @@ public sealed class PinDialogService
 
         var pinBox = new PasswordBox
         {
-            PlaceholderText = "FIDO2 PIN",
-            Margin = new Thickness(0, 4, 0, 0),
+            // The caller's purpose string doubles as the field label — no separate
+            // explanatory paragraph needed.
+            Header = purpose,
+            PasswordRevealMode = PasswordRevealMode.Peek,
         };
 
         var remember = new CheckBox
         {
             Content = Localization.Get("RememberPinThisSession"),
             IsChecked = true,
-            Margin = new Thickness(0, 8, 0, 0),
         };
 
         var panel = new StackPanel
         {
-            Spacing = 4,
+            Spacing = 14,
             Children =
             {
-                new TextBlock
-                {
-                    Text = purpose,
-                    TextWrapping = TextWrapping.Wrap,
-                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(
-                        Microsoft.UI.Colors.SaddleBrown),
-                },
                 pinBox,
                 remember,
             },
@@ -92,9 +86,8 @@ public sealed class PinDialogService
 
         var input = new TextBox
         {
-            PlaceholderText = label,
+            Header = label,
             Text = preset ?? "",
-            Margin = new Thickness(0, 4, 0, 0),
         };
         var dialog = new ContentDialog
         {

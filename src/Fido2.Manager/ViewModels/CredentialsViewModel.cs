@@ -28,6 +28,13 @@ public partial class CredentialsViewModel : ObservableObject
     [ObservableProperty]
     public partial bool HasCredentials { get; set; }
 
+    /// <summary>The list itself stays empty — this drives the centered placeholder instead.</summary>
+    public Microsoft.UI.Xaml.Visibility EmptyVisibility => string.IsNullOrEmpty(EmptyText)
+        ? Microsoft.UI.Xaml.Visibility.Collapsed
+        : Microsoft.UI.Xaml.Visibility.Visible;
+
+    partial void OnEmptyTextChanged(string value) => OnPropertyChanged(nameof(EmptyVisibility));
+
     public async Task OnSessionOpenedAsync() => await ListAsync().ConfigureAwait(true);
 
     [RelayCommand]

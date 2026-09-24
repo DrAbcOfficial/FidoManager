@@ -4,31 +4,46 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:Fido2.Manager.ViewModels">
 
-    <Grid RowSpacing="8">
+    <Grid RowSpacing="14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{x:Bind ViewModel.Summary, Mode=OneWay}"
-                   FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+        <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Style="{StaticResource GlyphTile}" Width="40" Height="40" CornerRadius="8">
+                <FontIcon Glyph="&#xE7F8;" FontSize="18"
+                          Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                          HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <StackPanel Spacing="2" VerticalAlignment="Center">
+                <TextBlock Text="{x:Bind ViewModel.DeviceName, Mode=OneWay}"
+                           Style="{StaticResource PageTitle}" />
+                <TextBlock Text="{x:Bind ViewModel.Capabilities, Mode=OneWay}"
+                           Style="{StaticResource PageCaption}" />
+            </StackPanel>
+        </StackPanel>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ListView ItemsSource="{x:Bind ViewModel.Rows}" SelectionMode="None">
+        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="4"
+                Visibility="{x:Bind ViewModel.RowsVisibility, Mode=OneWay}">
+            <ListView ItemsSource="{x:Bind ViewModel.Rows}" SelectionMode="None"
+                      Background="Transparent"
+                      ItemContainerStyle="{StaticResource RowContainer}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="vm:NameValueRow">
-                        <Grid ColumnSpacing="12" Padding="0,2">
+                        <Grid ColumnSpacing="16">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="170" />
+                                <ColumnDefinition Width="128" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Name}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="{x:Bind Name}" Style="{StaticResource PageCaption}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="1" Text="{x:Bind Value}" TextWrapping="Wrap"
-                                       IsTextSelectionEnabled="True" />
+                                       IsTextSelectionEnabled="True" VerticalAlignment="Center" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </ScrollViewer>
+        </Border>
     </Grid>
 </UserControl>

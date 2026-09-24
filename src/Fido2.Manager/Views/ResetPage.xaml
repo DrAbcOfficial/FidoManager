@@ -3,13 +3,37 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <StackPanel Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
-        <TextBlock x:Name="WarningMain" TextWrapping="Wrap" />
-        <TextBlock x:Name="WarningCritical" TextWrapping="Wrap"
-                   FontWeight="SemiBold" Foreground="#C42B1C" />
-        <TextBlock x:Name="WindowHint" TextWrapping="Wrap"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-        <Button x:Name="ResetButton" Command="{x:Bind ViewModel.ResetCommand}"
-                Background="#C42B1C" Foreground="White" />
-    </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto">
+        <StackPanel Spacing="14" MaxWidth="660" HorizontalAlignment="Left">
+
+            <Border Style="{StaticResource Card}" MinWidth="520"
+                    Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}">
+                <Grid ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE7BA;" FontSize="20"
+                              Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                              VerticalAlignment="Top" />
+                    <StackPanel Grid.Column="1" Spacing="6">
+                        <TextBlock x:Name="WarningMain" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Name="WarningCritical" Style="{StaticResource PageCaption}" />
+                        <TextBlock x:Name="WindowHint" Style="{StaticResource PageCaption}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Button x:Name="ResetButton" HorizontalAlignment="Left" Height="32" Padding="14,0"
+                    Background="{ThemeResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource SystemFillColorCriticalBrush}"
+                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                    Command="{x:Bind ViewModel.ResetCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE913;" FontSize="14" />
+                    <TextBlock x:Name="ResetButtonText" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

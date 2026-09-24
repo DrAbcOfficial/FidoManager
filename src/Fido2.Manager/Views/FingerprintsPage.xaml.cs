@@ -11,9 +11,9 @@ public sealed partial class FingerprintsPage : UserControl
     public FingerprintsPage()
     {
         InitializeComponent();
-        ListButton.Content = Localization.Get("BioListButton");
-        EnrollButton.Content = Localization.Get("BioEnrollButton");
-        RenameButton.Content = Localization.Get("BioRenameButton");
-        DeleteButton.Content = Localization.Get("BioDeleteButton");
+        ListButtonText.Text = Localization.Get("BioListButton");
+        EnrollButtonText.Text = Localization.Get("BioEnrollButton");
+        RenameButtonText.Text = Localization.Get("BioRenameButton");
+        DeleteButtonText.Text = Localization.Get("BioDeleteButton");
     }
 }

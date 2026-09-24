@@ -3,11 +3,10 @@ using Fido2.Manager.Services;
 using Fido2.Manager.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Windows.Graphics;
 
 namespace Fido2.Manager;
-
-/// <summary>Language switcher entry: Tag is the saved preference ("" = follow the system).</summary>
-public sealed record LanguageOption(string Tag, string Label);
 
 /// <summary>Navigation shell. Pages are instantiated once in XAML and switched by
 /// Visibility — deliberately avoiding Frame.Navigate, whose type resolution relies on
@@ -19,20 +18,25 @@ public sealed partial class MainWindow : Window
     private MainViewModel ViewModel => AppServices.Main;
 
     private bool _suppressLanguageSelection;
+    private bool _scanned;
 
     public MainWindow()
     {
         InitializeComponent();
 
         Title = Localization.Get("AppTitle");
-        AppServices.Initialize(DispatcherQueue);
-        AppServices.PinDialog.XamlRoot = Content.XamlRoot;
+        AppTitleBar.Title = Title;
+        // Acrylic material: everything above it must stay on the theme's layer/card
+        // brushes, otherwise the backdrop is painted over and the window looks flat.
+        SystemBackdrop = new DesktopAcrylicBackdrop();
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppTitleBar);
+        AppWindow.Resize(new SizeInt32(1020, 720));
 
-        BannerText.Text = ViewModel.ElevationBanner;
-        Banner.Visibility = ViewModel.IsElevated ? Visibility.Collapsed : Visibility.Visible;
+        AppServices.Initialize(DispatcherQueue);
 
         ApplyLocalizedTexts();
-        InitializeLanguageCombo();
+        InitializeLanguageMenu();
 
         AppServices.UiState.Changed += RefreshStatus;
         RefreshStatus();
@@ -41,11 +45,15 @@ public sealed partial class MainWindow : Window
         Activated += OnActivated;
     }
 
-    private bool _scanned;
-
     private void OnActivated(object sender, WindowActivatedEventArgs args)
     {
-        if (_scanned || args.WindowActivationState == WindowActivationState.Deactivated)
+        if (args.WindowActivationState == WindowActivationState.Deactivated)
+        {
+            return;
+        }
+        // XamlRoot only exists once the content is attached to a live window.
+        AppServices.PinDialog.XamlRoot = Content.XamlRoot;
+        if (_scanned)
         {
             return;
         }
@@ -55,9 +63,9 @@ public sealed partial class MainWindow : Window
 
     private void ApplyLocalizedTexts()
     {
-        DeviceLabel.Text = Localization.Get("DeviceLabel");
-        RefreshButton.Content = Localization.Get("RefreshButton");
-        LanguageLabel.Text = Localization.Get("LanguageLabel");
+        DeviceCombo.PlaceholderText = Localization.Get("SelectDevicePrompt");
+        ToolTipService.SetToolTip(RefreshButton, Localization.Get("RefreshButton"));
+        ElevationBar.Title = Localization.Get("BannerNotElevatedTitle");
         NavDeviceInfo.Content = Localization.Get("NavDeviceInfo");
         NavCredentials.Content = Localization.Get("NavCredentials");
         NavFingerprints.Content = Localization.Get("NavFingerprints");
@@ -68,7 +76,9 @@ public sealed partial class MainWindow : Window
 
     private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        if (args.SelectedItemContainer?.Tag is string tag && int.TryParse(tag, out int index))
+        // SelectedItem (the NavigationViewItem itself) rather than SelectedItemContainer:
+        // the container can be a recycled element whose Tag belongs to another item.
+        if (args.SelectedItem is NavigationViewItem { Tag: string tag } && int.TryParse(tag, out int index))
         {
             FrameworkElement[] pages = [Page0, Page1, Page2, Page3, Page4, Page5];
             for (int i = 0; i < pages.Length; i++)
@@ -78,35 +88,37 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void InitializeLanguageCombo()
+    private void InitializeLanguageMenu()
     {
         // "" = follow the system language.
         string applied = Localization.LoadSavedLanguage() ?? Localization.Auto;
-        List<LanguageOption> options =
+        RadioMenuFlyoutItem[] items = [LanguageAutoItem, LanguageZhItem, LanguageEnItem];
+        string[] tags = [Localization.Auto, Localization.Chinese, Localization.English];
+        string[] labels =
         [
-            new(Localization.Auto, Localization.Get("LanguageAuto")),
-            new(Localization.Chinese, "中文"),
-            new(Localization.English, "English"),
+            Localization.Get("LanguageAuto"),
+            Localization.Get("LanguageChinese"),
+            Localization.Get("LanguageEnglish"),
         ];
+
         _suppressLanguageSelection = true;
-        LanguageCombo.ItemsSource = options;
-        LanguageCombo.SelectedIndex = applied switch
+        for (int i = 0; i < items.Length; i++)
         {
-            Localization.Chinese => 1,
-            Localization.English => 2,
-            _ => 0,
-        };
+            items[i].Tag = tags[i];
+            items[i].Text = labels[i];
+            items[i].IsChecked = tags[i] == applied;
+        }
         _suppressLanguageSelection = false;
     }
 
-    private async void LanguageCombo_SelectionChanged(object sender, SelectionChangedEventArgs args)
+    private async void LanguageItem_Click(object sender, RoutedEventArgs args)
     {
-        if (_suppressLanguageSelection || LanguageCombo.SelectedItem is not LanguageOption option)
+        if (_suppressLanguageSelection || sender is not RadioMenuFlyoutItem item || item.Tag is not string tag)
         {
             return;
         }
         string applied = Localization.LoadSavedLanguage() ?? Localization.Auto;
-        if (option.Tag == applied)
+        if (tag == applied)
         {
             return;
         }
@@ -118,11 +130,11 @@ public sealed partial class MainWindow : Window
             closeText: Localization.Get("Later")).ConfigureAwait(true);
         if (!restart)
         {
-            InitializeLanguageCombo(); // revert to the language actually in effect
+            InitializeLanguageMenu(); // revert to the language actually in effect
             return;
         }
 
-        Localization.SaveLanguage(option.Tag);
+        Localization.SaveLanguage(tag);
         Process.Start(new ProcessStartInfo { FileName = Environment.ProcessPath!, UseShellExecute = true });
         Application.Current.Exit();
     }
@@ -132,8 +144,6 @@ public sealed partial class MainWindow : Window
         UiStateService ui = AppServices.UiState;
         BusyRing.IsActive = ui.IsBusy;
         StatusText.Text = ui.Status;
-        StatusText.Foreground = ui.IsError
-            ? new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.IndianRed)
-            : new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray);
+        StatusErrorIcon.Visibility = ui.IsError ? Visibility.Visible : Visibility.Collapsed;
     }
 }

@@ -3,34 +3,60 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid RowSpacing="12" MaxWidth="560" HorizontalAlignment="Left" VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto">
+        <StackPanel Spacing="14" MaxWidth="560" HorizontalAlignment="Left">
 
-        <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}" TextWrapping="Wrap" />
+            <!-- 状态 + 检查 -->
+            <Border Style="{StaticResource Card}" MinWidth="460">
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE72E;" FontSize="16"
+                              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                              VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.StateText, Mode=OneWay}"
+                               Style="{StaticResource PageCaption}" VerticalAlignment="Center" />
+                    <Button Grid.Column="2" x:Name="CheckButton" Style="{StaticResource ToolButton}"
+                            Command="{x:Bind ViewModel.CheckCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE72C;" FontSize="14" />
+                            <TextBlock x:Name="CheckButtonText" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
 
-        <Button Grid.Row="1" x:Name="CheckButton" Command="{x:Bind ViewModel.CheckCommand}" />
+            <!-- 修改 PIN -->
+            <Border Style="{StaticResource Card}" MinWidth="460">
+                <StackPanel Spacing="14">
+                    <PasswordBox x:Name="OldPinBox" PasswordRevealMode="Peek"
+                                 Password="{x:Bind ViewModel.OldPin, Mode=TwoWay}"
+                                 IsEnabled="{x:Bind ViewModel.HasPin, Mode=OneWay}" />
 
-        <TextBlock Grid.Row="2" x:Name="CurrentLabel" Margin="0,12,0,0" />
-        <PasswordBox Grid.Row="3" x:Name="OldPinBox" Password="{x:Bind ViewModel.OldPin, Mode=TwoWay}"
-                     IsEnabled="{x:Bind ViewModel.HasPin, Mode=OneWay}" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <PasswordBox x:Name="NewPinBox" PasswordRevealMode="Peek"
+                                     Password="{x:Bind ViewModel.NewPin, Mode=TwoWay}" />
+                        <PasswordBox x:Name="ConfirmPinBox" Grid.Column="1" PasswordRevealMode="Peek"
+                                     Password="{x:Bind ViewModel.ConfirmPin, Mode=TwoWay}" />
+                    </Grid>
 
-        <TextBlock Grid.Row="4" x:Name="NewLabel" Margin="0,12,0,0" />
-        <PasswordBox Grid.Row="5" Password="{x:Bind ViewModel.NewPin, Mode=TwoWay}" />
-
-        <TextBlock Grid.Row="6" x:Name="ConfirmLabel" Margin="0,12,0,0" />
-        <StackPanel Grid.Row="7" Orientation="Horizontal" Spacing="12" Margin="0,4,0,0">
-            <PasswordBox x:Name="ConfirmPinBox" Password="{x:Bind ViewModel.ConfirmPin, Mode=TwoWay}" Width="220" />
-            <Button x:Name="ApplyButton" Command="{x:Bind ViewModel.ApplyCommand}"
-                    Style="{ThemeResource AccentButtonStyle}" />
+                    <Button x:Name="ApplyButton" HorizontalAlignment="Left"
+                            Style="{StaticResource PrimaryToolButton}"
+                            Command="{x:Bind ViewModel.ApplyCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE73E;" FontSize="14" />
+                            <TextBlock x:Name="ApplyButtonText" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

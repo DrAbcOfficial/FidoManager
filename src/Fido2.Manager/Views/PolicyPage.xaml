@@ -3,49 +3,77 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <StackPanel Spacing="16" MaxWidth="760" HorizontalAlignment="Left">
-        <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}" TextWrapping="Wrap"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto">
+        <StackPanel Spacing="12" MaxWidth="660" HorizontalAlignment="Left">
 
-        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-            <StackPanel Spacing="8">
-                <TextBlock x:Name="AlwaysUvTitle" FontSize="16" FontWeight="SemiBold" />
-                <TextBlock x:Name="AlwaysUvDesc"
-                           TextWrapping="Wrap"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <Button Content="{x:Bind ViewModel.ToggleButtonText, Mode=OneWay}"
-                            Command="{x:Bind ViewModel.ToggleAlwaysUvCommand}"
-                            IsEnabled="{x:Bind ViewModel.CanToggleAlwaysUv, Mode=OneWay}" />
-                    <TextBlock Text="{x:Bind ViewModel.AlwaysUvText, Mode=OneWay}" VerticalAlignment="Center" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
+            <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}"
+                       Style="{StaticResource PageCaption}" />
 
-        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-            <StackPanel Spacing="8">
-                <TextBlock x:Name="MinPinTitle" FontSize="16" FontWeight="SemiBold" />
-                <TextBlock x:Name="MinPinDesc"
-                           TextWrapping="Wrap"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <NumberBox Value="{x:Bind ViewModel.MinPinLength, Mode=TwoWay}"
-                               Minimum="4" Maximum="63" SpinButtonPlacementMode="Compact" Width="140" />
-                    <Button x:Name="ApplyMinPinButton" Command="{x:Bind ViewModel.ApplyMinPinCommand}"
+            <!-- alwaysUv -->
+            <Border Style="{StaticResource Card}" MinWidth="520">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
+                        <TextBlock x:Name="AlwaysUvTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Name="AlwaysUvDesc" Style="{StaticResource PageCaption}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <Border Style="{StaticResource Pill}"
+                                Visibility="{x:Bind ViewModel.StateVisibility, Mode=OneWay}">
+                            <TextBlock Text="{x:Bind ViewModel.AlwaysUvText, Mode=OneWay}"
+                                       Style="{StaticResource PageCaption}" />
+                        </Border>
+                        <Button Content="{x:Bind ViewModel.ToggleButtonText, Mode=OneWay}"
+                                Style="{StaticResource ToolButton}"
+                                Command="{x:Bind ViewModel.ToggleAlwaysUvCommand}"
+                                IsEnabled="{x:Bind ViewModel.CanToggleAlwaysUv, Mode=OneWay}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 最小 PIN 长度 -->
+            <Border Style="{StaticResource Card}" MinWidth="520">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
+                        <TextBlock x:Name="MinPinTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Name="MinPinDesc" Style="{StaticResource PageCaption}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <NumberBox Value="{x:Bind ViewModel.MinPinLength, Mode=TwoWay}"
+                                   Minimum="4" Maximum="63" SpinButtonPlacementMode="Compact"
+                                   Width="132" Height="32"
+                                   IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
+                        <Button x:Name="ApplyMinPinButton" Style="{StaticResource ToolButton}"
+                                Command="{x:Bind ViewModel.ApplyMinPinCommand}"
+                                IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 下次强制改 PIN -->
+            <Border Style="{StaticResource Card}" MinWidth="520">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="2" VerticalAlignment="Center">
+                        <TextBlock x:Name="ForceChangeTitle" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                        <TextBlock x:Name="ForceChangeDesc" Style="{StaticResource PageCaption}" />
+                    </StackPanel>
+                    <Button x:Name="ForceChangeButton" Grid.Column="1" Style="{StaticResource ToolButton}"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.ForcePinChangeCommand}"
                             IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
-
-        <Border Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-            <StackPanel Spacing="8">
-                <TextBlock x:Name="ForceChangeTitle" FontSize="16" FontWeight="SemiBold" />
-                <TextBlock x:Name="ForceChangeDesc"
-                           TextWrapping="Wrap"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                <Button x:Name="ForceChangeButton" Command="{x:Bind ViewModel.ForcePinChangeCommand}"
-                        IsEnabled="{x:Bind ViewModel.CanSetMinPin, Mode=OneWay}" />
-            </StackPanel>
-        </Border>
-    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -35,6 +35,9 @@ public partial class MainViewModel : ObservableObject
 
     public bool IsElevated { get; } = CheckElevated();
 
+    /// <summary>The window's warning bar — only the missing-elevation case is worth showing.</summary>
+    public bool ShowElevationWarning => !IsElevated;
+
     public string ElevationBanner => IsElevated
         ? Localization.Get("BannerElevated")
         : Localization.Get("BannerNotElevated");
@@ -107,7 +110,7 @@ public partial class MainViewModel : ObservableObject
             AppServices.Sessions.ReplaceSession(session);
 
             string serial = session.VendorSerial is { } s ? Localization.Format("SerialNumberLabel", s) : "";
-            DeviceSummary = $"{session.DisplayName}{serial}   |   {string.Join(", ", session.Info.Versions)}";
+            DeviceSummary = $"{session.DisplayName}{serial} · {string.Join(" ", session.Info.Versions)}";
             UiState.SetMessage(Localization.Get("Connected"));
             SessionOpened?.Invoke();
         }

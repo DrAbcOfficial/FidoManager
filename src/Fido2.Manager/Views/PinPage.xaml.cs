@@ -11,10 +11,11 @@ public sealed partial class PinPage : UserControl
     public PinPage()
     {
         InitializeComponent();
-        CheckButton.Content = Localization.Get("PinCheckButton");
-        CurrentLabel.Text = Localization.Get("PinCurrentLabel");
-        NewLabel.Text = Localization.Get("PinNewLabel");
-        ConfirmLabel.Text = Localization.Get("PinConfirmLabel");
-        ApplyButton.Content = Localization.Get("PinApplyButton");
+        CheckButtonText.Text = Localization.Get("PinCheckButton");
+        ApplyButtonText.Text = Localization.Get("PinApplyButton");
+        OldPinBox.Header = Localization.Get("PinCurrentLabel");
+        NewPinBox.Header = Localization.Get("PinNewLabel");
+        NewPinBox.PlaceholderText = Localization.Get("PinNewHint");
+        ConfirmPinBox.Header = Localization.Get("PinConfirmLabel");
     }
 }

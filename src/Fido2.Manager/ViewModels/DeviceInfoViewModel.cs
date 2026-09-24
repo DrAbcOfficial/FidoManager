@@ -16,13 +16,29 @@ public partial class DeviceInfoViewModel : ObservableObject
 
     public DeviceInfoViewModel()
     {
-        Summary = Localization.Get("NoDeviceSelected");
+        DeviceName = Localization.Get("NoDeviceSelected");
+        Capabilities = "";
     }
 
     public ObservableCollection<NameValueRow> Rows { get; } = [];
 
+    /// <summary>Header line: the device's display name.</summary>
     [ObservableProperty]
-    public partial string Summary { get; set; }
+    public partial string DeviceName { get; set; }
+
+    /// <summary>Header line: capabilities joined into one short line, e.g. "FIDO 2.1 · PIN · 指纹".</summary>
+    [ObservableProperty]
+    public partial string Capabilities { get; set; }
+
+    [ObservableProperty]
+    public partial bool HasRows { get; set; }
+
+    /// <summary>Hides the whole property card when no device is connected.</summary>
+    public Microsoft.UI.Xaml.Visibility RowsVisibility => HasRows
+        ? Microsoft.UI.Xaml.Visibility.Visible
+        : Microsoft.UI.Xaml.Visibility.Collapsed;
+
+    partial void OnHasRowsChanged(bool value) => OnPropertyChanged(nameof(RowsVisibility));
 
     [RelayCommand]
     public async Task OnSessionOpenedAsync()
@@ -31,7 +47,9 @@ public partial class DeviceInfoViewModel : ObservableObject
         if (session is null)
         {
             Rows.Clear();
-            Summary = Localization.Get("NoDeviceSelected");
+            HasRows = false;
+            DeviceName = Localization.Get("NoDeviceSelected");
+            Capabilities = "";
             return;
         }
 
@@ -59,9 +77,12 @@ public partial class DeviceInfoViewModel : ObservableObject
                 ? Localization.Format("PinSetWithRetries", state.RetriesRemaining)
                 : Localization.Get("PinNotSet")));
 
-            Rows.Add(new NameValueRow(Localization.Get("RowCapabilities"), info.Options.Summary));
+            string capabilities = string.Join(" · ", DescribeCapabilities(info));
+            Rows.Add(new NameValueRow(Localization.Get("RowCapabilities"), capabilities));
+            HasRows = true;
 
-            Summary = $"{session.DisplayName} — {string.Join(" | ", DescribeCapabilities(info))}";
+            DeviceName = session.DisplayName;
+            Capabilities = capabilities;
             UiState.SetMessage(Localization.Get("DeviceInfoLoaded"));
         }
         catch (Exception ex)

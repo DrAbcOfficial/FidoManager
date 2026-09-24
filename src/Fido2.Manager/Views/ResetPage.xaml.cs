@@ -14,6 +14,6 @@ public sealed partial class ResetPage : UserControl
         WarningMain.Text = Localization.Get("ResetWarningMain");
         WarningCritical.Text = Localization.Get("ResetWarningCritical");
         WindowHint.Text = Localization.Get("ResetWindowHint");
-        ResetButton.Content = Localization.Get("ResetButton");
+        ResetButtonText.Text = Localization.Get("ResetButton");
     }
 }
