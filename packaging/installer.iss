@@ -1,7 +1,7 @@
 ; Inno Setup script for FIDO2 Manager (unpackaged WinUI 3 app).
 ; CI invokes it as:
 ;   iscc packaging\installer.iss /DAppVersion=<version> /O<output-dir>
-; AppVersion is the git tag without the leading "v".
+; AppVersion is the release git tag, with any leading "v" stripped.
 
 #ifndef AppVersion
 #define AppVersion "0.0.0"
@@ -22,7 +22,7 @@ DisableProgramGroupPage=yes
 ; The NativeAOT single-file build is x64-only; {autopf} then resolves to Program Files.
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputDir=output
-OutputBaseFilename=FIDO2.Manager-v{#AppVersion}-setup
+OutputBaseFilename=FIDO2.Manager-{#AppVersion}-setup
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
