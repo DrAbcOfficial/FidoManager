@@ -6,6 +6,8 @@
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>Fido2.Manager</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- 非打包应用的任务栏/Alt-Tab/窗口图标取自 exe 内嵌图标,由 tools/make_icons.py 生成 -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 
