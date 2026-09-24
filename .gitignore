@@ -5,7 +5,7 @@
 [Ll]og/
 [Ll]ogs/
 
-# Python tooling artifacts (tools/*.py)
+# Python tooling artifacts
 __pycache__/
 *.pyc
 
