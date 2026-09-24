@@ -8,7 +8,7 @@ public sealed class UiStateService
 {
     private DispatcherQueue? _dispatcher;
     private bool _isBusy;
-    private string _status = "就绪";
+    private string _status = Localization.Get("StatusReady");
     private bool _isError;
 
     public event Action? Changed;

@@ -17,7 +17,7 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-        DeviceSummary = "未选择设备";
+        DeviceSummary = Localization.Get("NoDeviceSelected");
     }
 
     private static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(15);
@@ -36,8 +36,8 @@ public partial class MainViewModel : ObservableObject
     public bool IsElevated { get; } = CheckElevated();
 
     public string ElevationBanner => IsElevated
-        ? "已以管理员身份运行 — 全部功能可用。"
-        : "未提权 — USB HID 无法打开(0x5),请以管理员身份重新运行。";
+        ? Localization.Get("BannerElevated")
+        : Localization.Get("BannerNotElevated");
 
     /// <summary>Raised after a device was connected and its session is ready.</summary>
     public event Action? SessionOpened;
@@ -46,7 +46,7 @@ public partial class MainViewModel : ObservableObject
     private async Task RefreshAsync()
     {
         UiState.IsBusy = true;
-        UiState.SetMessage("正在扫描设备…");
+        UiState.SetMessage(Localization.Get("ScanningDevices"));
         try
         {
             // A remembered PIN belongs to the key that was plugged in — a rescan may
@@ -59,12 +59,14 @@ public partial class MainViewModel : ObservableObject
             {
                 Devices.Add(device);
             }
-            UiState.SetMessage($"找到 {devices.Count} 台设备");
-            DeviceSummary = devices.Count > 0 ? "请选择设备" : "未找到设备 — 插入钥匙或将卡片放到 NFC 读卡器上";
+            UiState.SetMessage(Localization.Format("DevicesFound", devices.Count));
+            DeviceSummary = devices.Count > 0
+                ? Localization.Get("SelectDevicePrompt")
+                : Localization.Get("NoDevicesFound");
         }
         catch (Exception ex)
         {
-            UiState.SetError($"扫描失败:{ex.Message}");
+            UiState.SetError(Localization.Format("ScanFailed", ex.Message));
         }
         finally
         {
@@ -93,7 +95,7 @@ public partial class MainViewModel : ObservableObject
     private async Task ConnectCoreAsync(DeviceEntry entry)
     {
         UiState.IsBusy = true;
-        UiState.SetMessage($"正在连接 {entry.DisplayName}…");
+        UiState.SetMessage(Localization.Format("Connecting", entry.DisplayName));
         try
         {
             using var timeout = new CancellationTokenSource(ConnectTimeout);
@@ -104,16 +106,16 @@ public partial class MainViewModel : ObservableObject
 
             AppServices.Sessions.ReplaceSession(session);
 
-            string serial = session.VendorSerial is { } s ? $"  串号 {s}" : "";
+            string serial = session.VendorSerial is { } s ? Localization.Format("SerialNumberLabel", s) : "";
             DeviceSummary = $"{session.DisplayName}{serial}   |   {string.Join(", ", session.Info.Versions)}";
-            UiState.SetMessage("已连接");
+            UiState.SetMessage(Localization.Get("Connected"));
             SessionOpened?.Invoke();
         }
         catch (Exception ex)
         {
             AppServices.Sessions.CloseDevice();
-            DeviceSummary = "连接失败";
-            UiState.SetError($"连接失败:{ex.Message}");
+            DeviceSummary = Localization.Get("ConnectFailed");
+            UiState.SetError(Localization.Format("ConnectFailedWithReason", ex.Message));
         }
         finally
         {

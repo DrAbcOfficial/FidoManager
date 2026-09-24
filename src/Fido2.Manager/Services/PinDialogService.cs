@@ -33,7 +33,7 @@ public sealed class PinDialogService
 
         var remember = new CheckBox
         {
-            Content = "本次会话内记住(不落盘)",
+            Content = Localization.Get("RememberPinThisSession"),
             IsChecked = true,
             Margin = new Thickness(0, 8, 0, 0),
         };
@@ -57,10 +57,10 @@ public sealed class PinDialogService
 
         var dialog = new ContentDialog
         {
-            Title = "需要 PIN",
+            Title = Localization.Get("PinDialogTitle"),
             Content = panel,
-            PrimaryButtonText = "确定",
-            CloseButtonText = "取消",
+            PrimaryButtonText = Localization.Get("CommonOk"),
+            CloseButtonText = Localization.Get("CommonCancel"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = root,
         };
@@ -100,16 +100,18 @@ public sealed class PinDialogService
         {
             Title = title,
             Content = input,
-            PrimaryButtonText = "确定",
-            CloseButtonText = "取消",
+            PrimaryButtonText = Localization.Get("CommonOk"),
+            CloseButtonText = Localization.Get("CommonCancel"),
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = root,
         };
         return await dialog.ShowAsync() == ContentDialogResult.Primary ? input.Text : null;
     }
 
-    /// <summary>Yes/no confirmation for destructive operations.</summary>
-    public async Task<bool> ConfirmAsync(string title, string message)
+    /// <summary>Yes/no confirmation for destructive operations. Button texts default to
+    /// 确认/取消 and can be overridden (e.g. the language restart prompt).</summary>
+    public async Task<bool> ConfirmAsync(string title, string message,
+        string? primaryText = null, string? closeText = null)
     {
         XamlRoot? root = XamlRoot ?? App.MainWindow?.Content?.XamlRoot;
         if (root is null)
@@ -120,8 +122,8 @@ public sealed class PinDialogService
         {
             Title = title,
             Content = message,
-            PrimaryButtonText = "确认",
-            CloseButtonText = "取消",
+            PrimaryButtonText = primaryText ?? Localization.Get("CommonConfirm"),
+            CloseButtonText = closeText ?? Localization.Get("CommonCancel"),
             DefaultButton = ContentDialogButton.Close,
             XamlRoot = root,
         };
@@ -139,7 +141,7 @@ public sealed class PinDialogService
         {
             Title = title,
             Content = message,
-            CloseButtonText = "关闭",
+            CloseButtonText = Localization.Get("CommonClose"),
             XamlRoot = root,
         };
         await dialog.ShowAsync();

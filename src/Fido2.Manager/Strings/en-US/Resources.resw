@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Common -->
+  <data name="AppTitle" xml:space="preserve"><value>FIDO2 Manager</value></data>
+  <data name="StatusReady" xml:space="preserve"><value>Ready</value></data>
+  <data name="Unnamed" xml:space="preserve"><value>(unnamed)</value></data>
+  <data name="CommonOk" xml:space="preserve"><value>OK</value></data>
+  <data name="CommonCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="CommonConfirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="CommonClose" xml:space="preserve"><value>Close</value></data>
+  <data name="CommonApply" xml:space="preserve"><value>Apply</value></data>
+  <data name="NotifyTitleHint" xml:space="preserve"><value>Notice</value></data>
+  <data name="PromptSelectDeviceFirst" xml:space="preserve"><value>Select a device first.</value></data>
+  <data name="On" xml:space="preserve"><value>on</value></data>
+  <data name="Off" xml:space="preserve"><value>off</value></data>
+
+  <!-- Main window -->
+  <data name="DeviceLabel" xml:space="preserve"><value>Device:</value></data>
+  <data name="RefreshButton" xml:space="preserve"><value>Refresh</value></data>
+  <data name="NavDeviceInfo" xml:space="preserve"><value>Device info</value></data>
+  <data name="NavCredentials" xml:space="preserve"><value>Credentials</value></data>
+  <data name="NavFingerprints" xml:space="preserve"><value>Fingerprints</value></data>
+  <data name="NavPin" xml:space="preserve"><value>PIN</value></data>
+  <data name="NavPolicy" xml:space="preserve"><value>Policy</value></data>
+  <data name="NavReset" xml:space="preserve"><value>Factory reset</value></data>
+  <data name="LanguageLabel" xml:space="preserve"><value>Language:</value></data>
+  <data name="LanguageAuto" xml:space="preserve"><value>Automatic (system default)</value></data>
+  <data name="LanguageDialogTitle" xml:space="preserve"><value>Language</value></data>
+  <data name="LanguageRestartPrompt" xml:space="preserve"><value>The language change takes effect after the app restarts. Restart now?</value></data>
+  <data name="RestartNow" xml:space="preserve"><value>Restart now</value></data>
+  <data name="Later" xml:space="preserve"><value>Later</value></data>
+
+  <!-- MainViewModel -->
+  <data name="BannerElevated" xml:space="preserve"><value>Running as administrator — all features available.</value></data>
+  <data name="BannerNotElevated" xml:space="preserve"><value>Not elevated — USB HID cannot be opened (0x5). Please rerun as administrator.</value></data>
+  <data name="ScanningDevices" xml:space="preserve"><value>Scanning for devices…</value></data>
+  <data name="DevicesFound" xml:space="preserve"><value>{0} device(s) found</value></data>
+  <data name="SelectDevicePrompt" xml:space="preserve"><value>Select a device</value></data>
+  <data name="NoDevicesFound" xml:space="preserve"><value>No devices found — plug in a key or place the card on an NFC reader</value></data>
+  <data name="ScanFailed" xml:space="preserve"><value>Scan failed: {0}</value></data>
+  <data name="Connecting" xml:space="preserve"><value>Connecting to {0}…</value></data>
+  <data name="SerialNumberLabel" xml:space="preserve"><value>  S/N {0}</value></data>
+  <data name="Connected" xml:space="preserve"><value>Connected</value></data>
+  <data name="ConnectFailed" xml:space="preserve"><value>Connection failed</value></data>
+  <data name="ConnectFailedWithReason" xml:space="preserve"><value>Connection failed: {0}</value></data>
+
+  <!-- Device info page -->
+  <data name="NoDeviceSelected" xml:space="preserve"><value>No device selected</value></data>
+  <data name="RowDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="RowSerialVendor" xml:space="preserve"><value>Serial (vendor)</value></data>
+  <data name="RowVersions" xml:space="preserve"><value>Versions</value></data>
+  <data name="RowExtensions" xml:space="preserve"><value>Extensions</value></data>
+  <data name="RowMaxMessageSize" xml:space="preserve"><value>Max message size</value></data>
+  <data name="BytesValue" xml:space="preserve"><value>{0} bytes</value></data>
+  <data name="RowPinProtocol" xml:space="preserve"><value>PIN protocol</value></data>
+  <data name="RowMinPinLength" xml:space="preserve"><value>Min PIN length</value></data>
+  <data name="RowFirmwareVersion" xml:space="preserve"><value>Firmware version</value></data>
+  <data name="RowTransport" xml:space="preserve"><value>Transport</value></data>
+  <data name="RowPin" xml:space="preserve"><value>PIN</value></data>
+  <data name="PinSetWithRetries" xml:space="preserve"><value>Set ({0} retries remaining)</value></data>
+  <data name="PinNotSet" xml:space="preserve"><value>Not set</value></data>
+  <data name="RowCapabilities" xml:space="preserve"><value>Capabilities</value></data>
+  <data name="CapPinSet" xml:space="preserve"><value>PIN set</value></data>
+  <data name="CapNoPin" xml:space="preserve"><value>No PIN</value></data>
+  <data name="CapFingerprint" xml:space="preserve"><value>Fingerprint</value></data>
+  <data name="CapCredentialMgmt" xml:space="preserve"><value>Credential management</value></data>
+  <data name="CapAuthnrConfig" xml:space="preserve"><value>Config commands</value></data>
+  <data name="CapForcePinChange" xml:space="preserve"><value>PIN change required</value></data>
+  <data name="DeviceInfoLoaded" xml:space="preserve"><value>Device info loaded</value></data>
+  <data name="DeviceInfoFailed" xml:space="preserve"><value>Failed to read device info: {0}</value></data>
+
+  <!-- Credentials page -->
+  <data name="CredsListButton" xml:space="preserve"><value>List credentials</value></data>
+  <data name="CredsDeleteButton" xml:space="preserve"><value>Delete selected</value></data>
+  <data name="CredsNotLoaded" xml:space="preserve"><value>Not loaded yet. Click “List credentials” — a PIN will be required.</value></data>
+  <data name="CredsNeedPin" xml:space="preserve"><value>Listing credentials requires the PIN.</value></data>
+  <data name="CredsUnsupportedTitle" xml:space="preserve"><value>Not supported</value></data>
+  <data name="CredsUnsupportedMessage" xml:space="preserve"><value>This key does not provide the credential management API.</value></data>
+  <data name="ReadingCredentials" xml:space="preserve"><value>Reading credentials…</value></data>
+  <data name="CredsStoredFree" xml:space="preserve"><value>{0} stored    {1} slots free</value></data>
+  <data name="CredsStored" xml:space="preserve"><value>{0} stored</value></data>
+  <data name="NoResidentCredentials" xml:space="preserve"><value>No discoverable (resident) credentials on this key.</value></data>
+  <data name="CredentialsListed" xml:space="preserve"><value>{0} credential(s)</value></data>
+  <data name="DeleteCredentialTitle" xml:space="preserve"><value>Delete credential</value></data>
+  <data name="DeleteCredentialConfirm" xml:space="preserve"><value>Delete this credential?&#10;&#10;{0} / {1}&#10;&#10;This action cannot be undone.</value></data>
+  <data name="DeleteCredentialNeedPin" xml:space="preserve"><value>Deleting a credential requires the PIN.</value></data>
+  <data name="DeletingCredential" xml:space="preserve"><value>Deleting credential…</value></data>
+  <data name="CredentialDeleted" xml:space="preserve"><value>Credential deleted</value></data>
+
+  <!-- Fingerprints page -->
+  <data name="BioListButton" xml:space="preserve"><value>List</value></data>
+  <data name="BioEnrollButton" xml:space="preserve"><value>Enroll new</value></data>
+  <data name="BioRenameButton" xml:space="preserve"><value>Rename</value></data>
+  <data name="BioDeleteButton" xml:space="preserve"><value>Delete</value></data>
+  <data name="BioNotLoaded" xml:space="preserve"><value>Not loaded yet. Click “List” — a PIN will be required.</value></data>
+  <data name="NoBioSensor" xml:space="preserve"><value>This key has no fingerprint sensor (getInfo does not advertise bioEnroll).</value></data>
+  <data name="BioListNeedPin" xml:space="preserve"><value>Listing fingerprints requires the PIN.</value></data>
+  <data name="NoFingerprints" xml:space="preserve"><value>No fingerprints on this key.</value></data>
+  <data name="FingerprintsListed" xml:space="preserve"><value>{0} fingerprint(s)</value></data>
+  <data name="EnrollTitle" xml:space="preserve"><value>Enroll fingerprint</value></data>
+  <data name="EnrollNamePrompt" xml:space="preserve"><value>Name this finger (optional):</value></data>
+  <data name="EnrollNeedPin" xml:space="preserve"><value>Enrolling a fingerprint requires the PIN.</value></data>
+  <data name="EnrollWaitFirstTouch" xml:space="preserve"><value>Waiting for first touch…</value></data>
+  <data name="EnrollInstruction" xml:space="preserve"><value>Touch the sensor repeatedly until enrollment completes.</value></data>
+  <data name="EnrollingTitle" xml:space="preserve"><value>Enrolling fingerprint</value></data>
+  <data name="Enrolling" xml:space="preserve"><value>Enrolling fingerprint…</value></data>
+  <data name="TouchSensor" xml:space="preserve"><value>Touch the sensor…</value></data>
+  <data name="SampleProgress" xml:space="preserve"><value>{0} — {1} more sample(s) needed</value></data>
+  <data name="Enrolled" xml:space="preserve"><value>Fingerprint enrolled ({0})</value></data>
+  <data name="EnrollCanceled" xml:space="preserve"><value>Enrollment canceled</value></data>
+  <data name="RenameTitle" xml:space="preserve"><value>Rename fingerprint</value></data>
+  <data name="RenamePrompt" xml:space="preserve"><value>New name:</value></data>
+  <data name="RenameNeedPin" xml:space="preserve"><value>Renaming requires the PIN.</value></data>
+  <data name="Renamed" xml:space="preserve"><value>Renamed</value></data>
+  <data name="DeleteFingerprintTitle" xml:space="preserve"><value>Delete fingerprint</value></data>
+  <data name="DeleteFingerprintConfirm" xml:space="preserve"><value>Delete this fingerprint?&#10;&#10;{0}&#10;&#10;This action cannot be undone.</value></data>
+  <data name="DeleteFingerprintNeedPin" xml:space="preserve"><value>Deleting a fingerprint requires the PIN.</value></data>
+  <data name="FingerprintDeleted" xml:space="preserve"><value>Fingerprint deleted</value></data>
+  <data name="BioSample00" xml:space="preserve"><value>Good sample captured.</value></data>
+  <data name="BioSample01" xml:space="preserve"><value>Sample too high or partial — try again.</value></data>
+  <data name="BioSample02" xml:space="preserve"><value>Sample too low or partial — try again.</value></data>
+  <data name="BioSample03" xml:space="preserve"><value>Sample partial — center your finger on the sensor.</value></data>
+  <data name="BioSample04" xml:space="preserve"><value>Too many failed samples — enrollment may need restarting.</value></data>
+  <data name="BioSample05" xml:space="preserve"><value>Low quality — clean the sensor and your finger, then retry.</value></data>
+  <data name="BioSample06" xml:space="preserve"><value>Too similar to the previous sample — adjust finger position.</value></data>
+  <data name="BioSample07" xml:space="preserve"><value>Sensor timeout — touch the sensor.</value></data>
+  <data name="BioSampleOther" xml:space="preserve"><value>Retry the sample.</value></data>
+
+  <!-- PIN page -->
+  <data name="PinCheckButton" xml:space="preserve"><value>Check PIN state</value></data>
+  <data name="PinCurrentLabel" xml:space="preserve"><value>Current PIN:</value></data>
+  <data name="PinNewLabel" xml:space="preserve"><value>New PIN (4–63 bytes):</value></data>
+  <data name="PinConfirmLabel" xml:space="preserve"><value>Confirm new PIN:</value></data>
+  <data name="PinApplyButton" xml:space="preserve"><value>Apply</value></data>
+  <data name="PinInitialState" xml:space="preserve"><value>Select a device, then click “Check”.</value></data>
+  <data name="PinNotSetFirstTime" xml:space="preserve"><value>No PIN is set. Leave “Current PIN” empty to set one for the first time.</value></data>
+  <data name="PinStateChecked" xml:space="preserve"><value>PIN state checked</value></data>
+  <data name="PinMismatchTitle" xml:space="preserve"><value>PINs do not match</value></data>
+  <data name="PinMismatchMessage" xml:space="preserve"><value>The two new PINs are not identical.</value></data>
+  <data name="PinTooShortTitle" xml:space="preserve"><value>PIN too short</value></data>
+  <data name="PinTooShortMessage" xml:space="preserve"><value>A PIN must be at least 4 bytes.</value></data>
+  <data name="PinCurrentRequiredTitle" xml:space="preserve"><value>Current PIN required</value></data>
+  <data name="PinCurrentRequiredMessage" xml:space="preserve"><value>The key already has a PIN; changing it requires the current PIN.</value></data>
+  <data name="ChangingPin" xml:space="preserve"><value>Changing PIN…</value></data>
+  <data name="SettingPin" xml:space="preserve"><value>Setting PIN…</value></data>
+  <data name="PinChanged" xml:space="preserve"><value>PIN changed</value></data>
+  <data name="PinSet" xml:space="preserve"><value>PIN set</value></data>
+
+  <!-- Policy page -->
+  <data name="PolicyAlwaysUvTitle" xml:space="preserve"><value>Always require user verification (alwaysUv)</value></data>
+  <data name="PolicyAlwaysUvDesc" xml:space="preserve"><value>Every assertion requires the PIN or a fingerprint, even when the relying party does not ask for it. Whether this toggle survives a factory reset depends on the vendor.</value></data>
+  <data name="PolicyMinPinTitle" xml:space="preserve"><value>Minimum PIN length</value></data>
+  <data name="PolicyMinPinDesc" xml:space="preserve"><value>Raise the shortest PIN the key accepts. It can only be raised — lowering it requires a factory reset. If the current PIN is shorter than the new minimum, the key forces a PIN change itself.</value></data>
+  <data name="PolicyApplyMinPinButton" xml:space="preserve"><value>Apply</value></data>
+  <data name="PolicyForceChangeTitle" xml:space="preserve"><value>Force PIN change on next use</value></data>
+  <data name="PolicyForceChangeDesc" xml:space="preserve"><value>The current PIN remains valid until it is changed. Useful before handing the key to someone else.</value></data>
+  <data name="PolicyForceChangeButton" xml:space="preserve"><value>Force PIN change</value></data>
+  <data name="PolicyInitialState" xml:space="preserve"><value>Policy state loads after a device is selected.</value></data>
+  <data name="ToggleButtonDefault" xml:space="preserve"><value>Toggle</value></data>
+  <data name="PolicyNoDevice" xml:space="preserve"><value>No device selected.</value></data>
+  <data name="AlwaysUvCurrentlyOn" xml:space="preserve"><value>Currently: on</value></data>
+  <data name="AlwaysUvCurrentlyOff" xml:space="preserve"><value>Currently: off</value></data>
+  <data name="AlwaysUvUnreported" xml:space="preserve"><value>Currently: not reported</value></data>
+  <data name="DisableAlwaysUv" xml:space="preserve"><value>Disable alwaysUv</value></data>
+  <data name="EnableAlwaysUv" xml:space="preserve"><value>Enable alwaysUv</value></data>
+  <data name="PolicyConfigSupported" xml:space="preserve"><value>This key supports authenticatorConfig.</value></data>
+  <data name="PolicyConfigNoSetMinPin" xml:space="preserve"><value>This key supports authenticatorConfig but not setMinPINLength — the length control is unavailable.</value></data>
+  <data name="PolicyConfigUnsupported" xml:space="preserve"><value>This key does not provide authenticatorConfig — policy changes are unavailable.</value></data>
+  <data name="AlwaysUvNeedPin" xml:space="preserve"><value>Changing alwaysUv requires the PIN.</value></data>
+  <data name="TogglingAlwaysUv" xml:space="preserve"><value>Toggling alwaysUv…</value></data>
+  <data name="AlwaysUvNow" xml:space="preserve"><value>alwaysUv is now {0}</value></data>
+  <data name="RaiseMinPinTitle" xml:space="preserve"><value>Raise minimum PIN length</value></data>
+  <data name="RaiseMinPinConfirm" xml:space="preserve"><value>Raise the minimum PIN length to {0}?&#10;&#10;This can only be raised — lowering it requires a factory reset (wiping all credentials).</value></data>
+  <data name="MinPinNeedPin" xml:space="preserve"><value>Changing the minimum PIN length requires the PIN.</value></data>
+  <data name="SettingMinPin" xml:space="preserve"><value>Setting minimum PIN length…</value></data>
+  <data name="MinPinNow" xml:space="preserve"><value>Minimum PIN length is now {0}</value></data>
+  <data name="ForcePinChangeTitle" xml:space="preserve"><value>Force PIN change on next use</value></data>
+  <data name="ForcePinChangeConfirm" xml:space="preserve"><value>A new PIN must be set the next time this key is used. Useful before handing the key over.</value></data>
+  <data name="ForcePinChangeNeedPin" xml:space="preserve"><value>Forcing a PIN change requires the PIN.</value></data>
+  <data name="ForcePinChangeSet" xml:space="preserve"><value>Set: a PIN change will be forced on next use</value></data>
+
+  <!-- Reset page -->
+  <data name="ResetWarningMain" xml:space="preserve"><value>A factory reset wipes all passkeys and the PIN on this key. This cannot be undone.</value></data>
+  <data name="ResetWarningCritical" xml:space="preserve"><value>Be sure to unplug and re-insert the key first.</value></data>
+  <data name="ResetWindowHint" xml:space="preserve"><value>The key only accepts a reset for about 10 seconds after power-up: unplug and re-insert it (or move it away from and back onto the NFC reader), then immediately click the button below.</value></data>
+  <data name="ResetButton" xml:space="preserve"><value>Factory reset</value></data>
+  <data name="ResetTitle" xml:space="preserve"><value>Factory reset</value></data>
+  <data name="ResetConfirm" xml:space="preserve"><value>A factory reset wipes all passkeys and the PIN on this key and cannot be undone.&#10;&#10;The key only accepts a reset for about 10 seconds after power-up: unplug and re-insert it (or move it away from and back onto the NFC reader), then immediately click “Confirm”.&#10;&#10;Continue?</value></data>
+  <data name="Resetting" xml:space="preserve"><value>Resetting…</value></data>
+  <data name="ResetDone" xml:space="preserve"><value>Factory reset complete. All credentials and the PIN have been cleared.</value></data>
+
+  <!-- PIN dialog -->
+  <data name="PinDialogTitle" xml:space="preserve"><value>PIN required</value></data>
+  <data name="RememberPinThisSession" xml:space="preserve"><value>Remember for this session (never persisted)</value></data>
+
+  <!-- Device enumeration -->
+  <data name="NoCardOnReader" xml:space="preserve"><value>No card on reader {0}.</value></data>
+</root>

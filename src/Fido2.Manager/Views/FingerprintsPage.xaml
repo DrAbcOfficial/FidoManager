@@ -13,13 +13,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Spacing="8">
-            <Button Content="列出" Command="{x:Bind ViewModel.ListCommand}" />
-            <Button Content="录入新指纹" Command="{x:Bind ViewModel.EnrollCommand}"
+            <Button x:Name="ListButton" Command="{x:Bind ViewModel.ListCommand}" />
+            <Button x:Name="EnrollButton" Command="{x:Bind ViewModel.EnrollCommand}"
                     Style="{ThemeResource AccentButtonStyle}" />
-            <Button Content="重命名" Command="{x:Bind ViewModel.RenameCommand}"
+            <Button x:Name="RenameButton" Command="{x:Bind ViewModel.RenameCommand}"
                     CommandParameter="{x:Bind BioList.SelectedItem, Mode=OneWay}"
                     IsEnabled="{x:Bind ViewModel.HasEnrollments, Mode=OneWay}" />
-            <Button Content="删除" Command="{x:Bind ViewModel.DeleteCommand}"
+            <Button x:Name="DeleteButton" Command="{x:Bind ViewModel.DeleteCommand}"
                     CommandParameter="{x:Bind BioList.SelectedItem, Mode=OneWay}"
                     IsEnabled="{x:Bind ViewModel.HasEnrollments, Mode=OneWay}" />
             <TextBlock Text="{x:Bind ViewModel.SensorText, Mode=OneWay}"

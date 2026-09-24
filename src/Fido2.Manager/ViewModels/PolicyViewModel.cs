@@ -13,8 +13,8 @@ public partial class PolicyViewModel : ObservableObject
 
     public PolicyViewModel()
     {
-        StateText = "选择设备后加载策略状态。";
-        ToggleButtonText = "切换";
+        StateText = Localization.Get("PolicyInitialState");
+        ToggleButtonText = Localization.Get("ToggleButtonDefault");
         MinPinLength = 8;
     }
 
@@ -41,7 +41,7 @@ public partial class PolicyViewModel : ObservableObject
         var session = AppServices.Sessions.Current;
         if (session is null)
         {
-            StateText = "未选择设备。";
+            StateText = Localization.Get("PolicyNoDevice");
             CanToggleAlwaysUv = CanSetMinPin = false;
             return;
         }
@@ -55,15 +55,19 @@ public partial class PolicyViewModel : ObservableObject
 
         AlwaysUvText = options.AlwaysUv switch
         {
-            true => "当前:开",
-            false => "当前:关",
-            null => "当前:未报告",
+            true => Localization.Get("AlwaysUvCurrentlyOn"),
+            false => Localization.Get("AlwaysUvCurrentlyOff"),
+            null => Localization.Get("AlwaysUvUnreported"),
         };
-        ToggleButtonText = options.AlwaysUv == true ? "关闭 alwaysUv" : "开启 alwaysUv";
+        ToggleButtonText = options.AlwaysUv == true
+            ? Localization.Get("DisableAlwaysUv")
+            : Localization.Get("EnableAlwaysUv");
 
         StateText = authnrCfg
-            ? (setMinPin ? "此钥匙支持 authenticatorConfig。" : "此钥匙支持 authenticatorConfig,但不含 setMinPINLength — 长度控件不可用。")
-            : "此钥匙不提供 authenticatorConfig — 策略修改不可用。";
+            ? (setMinPin
+                ? Localization.Get("PolicyConfigSupported")
+                : Localization.Get("PolicyConfigNoSetMinPin"))
+            : Localization.Get("PolicyConfigUnsupported");
         await Task.CompletedTask.ConfigureAwait(true);
     }
 
@@ -75,20 +79,20 @@ public partial class PolicyViewModel : ObservableObject
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("修改 alwaysUv 需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("AlwaysUvNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
         }
 
         UiState.IsBusy = true;
-        UiState.SetMessage("正在切换 alwaysUv…");
+        UiState.SetMessage(Localization.Get("TogglingAlwaysUv"));
         try
         {
             bool after = await session.ToggleAlwaysUvAsync(pin, CancellationToken.None).ConfigureAwait(true);
-            AlwaysUvText = after ? "当前:开" : "当前:关";
-            ToggleButtonText = after ? "关闭 alwaysUv" : "开启 alwaysUv";
-            UiState.SetMessage($"alwaysUv 现在为 {(after ? "开" : "关")}");
+            AlwaysUvText = after ? Localization.Get("AlwaysUvCurrentlyOn") : Localization.Get("AlwaysUvCurrentlyOff");
+            ToggleButtonText = after ? Localization.Get("DisableAlwaysUv") : Localization.Get("EnableAlwaysUv");
+            UiState.SetMessage(Localization.Format("AlwaysUvNow", Localization.Get(after ? "On" : "Off")));
         }
         catch (Exception ex)
         {
@@ -110,24 +114,24 @@ public partial class PolicyViewModel : ObservableObject
             return;
         }
         bool confirmed = await AppServices.PinDialog.ConfirmAsync(
-            "提高最小 PIN 长度",
-            $"将最小 PIN 长度提高到 {MinPinLength}?\n\n此设置只能调高 — 调回必须恢复出厂(清空所有凭据)。").ConfigureAwait(true);
+            Localization.Get("RaiseMinPinTitle"),
+            Localization.Format("RaiseMinPinConfirm", MinPinLength)).ConfigureAwait(true);
         if (!confirmed)
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("修改最小 PIN 长度需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("MinPinNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
         }
 
         UiState.IsBusy = true;
-        UiState.SetMessage("正在设置最小 PIN 长度…");
+        UiState.SetMessage(Localization.Get("SettingMinPin"));
         try
         {
             await session.SetMinPinLengthAsync(pin, MinPinLength, null, forceChangePin: false, CancellationToken.None).ConfigureAwait(true);
-            UiState.SetMessage($"最小 PIN 长度现为 {MinPinLength}");
+            UiState.SetMessage(Localization.Format("MinPinNow", MinPinLength));
         }
         catch (Exception ex)
         {
@@ -149,13 +153,13 @@ public partial class PolicyViewModel : ObservableObject
             return;
         }
         bool confirmed = await AppServices.PinDialog.ConfirmAsync(
-            "强制下次改 PIN",
-            "下次使用此钥匙时必须设置新的 PIN。适合在转交钥匙前使用。").ConfigureAwait(true);
+            Localization.Get("ForcePinChangeTitle"),
+            Localization.Get("ForcePinChangeConfirm")).ConfigureAwait(true);
         if (!confirmed)
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("强制改 PIN 需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("ForcePinChangeNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
@@ -165,7 +169,7 @@ public partial class PolicyViewModel : ObservableObject
         try
         {
             await session.SetMinPinLengthAsync(pin, null, null, forceChangePin: true, CancellationToken.None).ConfigureAwait(true);
-            UiState.SetMessage("已设置:下次使用时强制改 PIN");
+            UiState.SetMessage(Localization.Get("ForcePinChangeSet"));
         }
         catch (Exception ex)
         {

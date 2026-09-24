@@ -12,13 +12,13 @@ public sealed record ResidentCredential(
     string CredentialIdHex)
 {
     /// <summary>UserName and DisplayName are optional per WebAuthn; fall back in order.</summary>
-    public string BestUserName => UserName ?? DisplayName ?? "(未命名)";
+    public string BestUserName => UserName ?? DisplayName ?? CoreStrings.Unnamed;
 }
 
 /// <summary>One fingerprint enrollment.</summary>
 public sealed record FingerprintEnrollment(string TemplateIdHex, string? FriendlyName)
 {
-    public string BestName => string.IsNullOrWhiteSpace(FriendlyName) ? "(未命名)" : FriendlyName!;
+    public string BestName => string.IsNullOrWhiteSpace(FriendlyName) ? CoreStrings.Unnamed : FriendlyName!;
 }
 
 /// <summary>getFingerprintSensorInfo result.</summary>

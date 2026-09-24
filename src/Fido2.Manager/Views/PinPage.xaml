@@ -17,19 +17,19 @@
 
         <TextBlock Text="{x:Bind ViewModel.StateText, Mode=OneWay}" TextWrapping="Wrap" />
 
-        <Button Grid.Row="1" Content="检查 PIN 状态" Command="{x:Bind ViewModel.CheckCommand}" />
+        <Button Grid.Row="1" x:Name="CheckButton" Command="{x:Bind ViewModel.CheckCommand}" />
 
-        <TextBlock Grid.Row="2" Text="当前 PIN:" Margin="0,12,0,0" />
+        <TextBlock Grid.Row="2" x:Name="CurrentLabel" Margin="0,12,0,0" />
         <PasswordBox Grid.Row="3" x:Name="OldPinBox" Password="{x:Bind ViewModel.OldPin, Mode=TwoWay}"
                      IsEnabled="{x:Bind ViewModel.HasPin, Mode=OneWay}" />
 
-        <TextBlock Grid.Row="4" Text="新 PIN(4–63 字节):" Margin="0,12,0,0" />
+        <TextBlock Grid.Row="4" x:Name="NewLabel" Margin="0,12,0,0" />
         <PasswordBox Grid.Row="5" Password="{x:Bind ViewModel.NewPin, Mode=TwoWay}" />
 
-        <TextBlock Grid.Row="6" Text="确认新 PIN:" Margin="0,12,0,0" />
+        <TextBlock Grid.Row="6" x:Name="ConfirmLabel" Margin="0,12,0,0" />
         <StackPanel Grid.Row="7" Orientation="Horizontal" Spacing="12" Margin="0,4,0,0">
             <PasswordBox x:Name="ConfirmPinBox" Password="{x:Bind ViewModel.ConfirmPin, Mode=TwoWay}" Width="220" />
-            <Button Content="应用" Command="{x:Bind ViewModel.ApplyCommand}"
+            <Button x:Name="ApplyButton" Command="{x:Bind ViewModel.ApplyCommand}"
                     Style="{ThemeResource AccentButtonStyle}" />
         </StackPanel>
     </Grid>

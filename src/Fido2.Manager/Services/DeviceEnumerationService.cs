@@ -38,7 +38,7 @@ public static class DeviceEnumerationService
                     DisplayName: $"NFC  {readerName}",
                     Kind: "NFC",
                     OpenTransport: () => PcscTransport.TryOpen(readerName)
-                        ?? throw new TransportException($"读卡器 {readerName} 上没有卡片。")));
+                        ?? throw new TransportException(Localization.Format("NoCardOnReader", readerName))));
             }
         }
 

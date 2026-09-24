@@ -4,14 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <StackPanel Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
-        <TextBlock TextWrapping="Wrap">
-            恢复出厂将清空此钥匙上的全部 passkey 与 PIN,此操作不可撤销。<Bold>请务必先拔插钥匙。</Bold>
-        </TextBlock>
-        <TextBlock TextWrapping="Wrap"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}">
-            钥匙只在上电后约 10 秒内接受重置:请先拔下再插回(或从 NFC 感应区移开再放回),然后立即点击下面的按钮。
-        </TextBlock>
-        <Button Content="恢复出厂设置" Command="{x:Bind ViewModel.ResetCommand}"
+        <TextBlock x:Name="WarningMain" TextWrapping="Wrap" />
+        <TextBlock x:Name="WarningCritical" TextWrapping="Wrap"
+                   FontWeight="SemiBold" Foreground="#C42B1C" />
+        <TextBlock x:Name="WindowHint" TextWrapping="Wrap"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        <Button x:Name="ResetButton" Command="{x:Bind ViewModel.ResetCommand}"
                 Background="#C42B1C" Foreground="White" />
     </StackPanel>
 </UserControl>

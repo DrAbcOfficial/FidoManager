@@ -36,4 +36,7 @@
     <ProjectReference Include="..\Fido2.Core\Fido2.Core.csproj" />
   </ItemGroup>
 
+  <!-- 双语 UI 字符串: Strings\zh-Hans / Strings\en-US 的 *.resw 由 SDK 自动包含进 PRI,
+       运行时由 MRT Core 原生解析,NativeAOT 下照常工作 -->
+
 </Project>

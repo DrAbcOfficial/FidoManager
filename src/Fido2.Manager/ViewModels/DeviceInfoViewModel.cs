@@ -16,7 +16,7 @@ public partial class DeviceInfoViewModel : ObservableObject
 
     public DeviceInfoViewModel()
     {
-        Summary = "未选择设备";
+        Summary = Localization.Get("NoDeviceSelected");
     }
 
     public ObservableCollection<NameValueRow> Rows { get; } = [];
@@ -31,7 +31,7 @@ public partial class DeviceInfoViewModel : ObservableObject
         if (session is null)
         {
             Rows.Clear();
-            Summary = "未选择设备";
+            Summary = Localization.Get("NoDeviceSelected");
             return;
         }
 
@@ -40,32 +40,34 @@ public partial class DeviceInfoViewModel : ObservableObject
         {
             var info = session.Info;
             Rows.Clear();
-            Rows.Add(new NameValueRow("设备", session.DisplayName));
+            Rows.Add(new NameValueRow(Localization.Get("RowDevice"), session.DisplayName));
             if (session.VendorSerial is { } serial)
             {
-                Rows.Add(new NameValueRow("串号(厂商)", serial));
+                Rows.Add(new NameValueRow(Localization.Get("RowSerialVendor"), serial));
             }
-            Rows.Add(new NameValueRow("版本", string.Join(", ", info.Versions)));
+            Rows.Add(new NameValueRow(Localization.Get("RowVersions"), string.Join(", ", info.Versions)));
             Rows.Add(new NameValueRow("AAGUID", info.Aaguid));
-            Rows.Add(new NameValueRow("扩展", string.Join(", ", info.Extensions)));
-            Rows.Add(new NameValueRow("最大消息大小", $"{info.MaxMessageSize} 字节"));
-            Rows.Add(new NameValueRow("PIN 协议", string.Join(", ", info.PinUvAuthProtocols)));
-            Rows.Add(new NameValueRow("最小 PIN 长度", info.MinPinLength.ToString()));
-            Rows.Add(new NameValueRow("固件版本", info.FirmwareVersion.ToString()));
-            Rows.Add(new NameValueRow("传输", session.Transport.GetType().Name.Replace("Transport", "")));
+            Rows.Add(new NameValueRow(Localization.Get("RowExtensions"), string.Join(", ", info.Extensions)));
+            Rows.Add(new NameValueRow(Localization.Get("RowMaxMessageSize"), Localization.Format("BytesValue", info.MaxMessageSize)));
+            Rows.Add(new NameValueRow(Localization.Get("RowPinProtocol"), string.Join(", ", info.PinUvAuthProtocols)));
+            Rows.Add(new NameValueRow(Localization.Get("RowMinPinLength"), info.MinPinLength.ToString()));
+            Rows.Add(new NameValueRow(Localization.Get("RowFirmwareVersion"), info.FirmwareVersion.ToString()));
+            Rows.Add(new NameValueRow(Localization.Get("RowTransport"), session.Transport.GetType().Name.Replace("Transport", "")));
 
             PinState state = await session.GetPinStateAsync(CancellationToken.None).ConfigureAwait(true);
-            Rows.Add(new NameValueRow("PIN", state.IsSet ? $"已设置(剩余 {state.RetriesRemaining} 次重试)" : "未设置"));
+            Rows.Add(new NameValueRow(Localization.Get("RowPin"), state.IsSet
+                ? Localization.Format("PinSetWithRetries", state.RetriesRemaining)
+                : Localization.Get("PinNotSet")));
 
-            Rows.Add(new NameValueRow("能力", info.Options.Summary));
+            Rows.Add(new NameValueRow(Localization.Get("RowCapabilities"), info.Options.Summary));
 
             Summary = $"{session.DisplayName} — {string.Join(" | ", DescribeCapabilities(info))}";
-            UiState.SetMessage("设备信息已加载");
+            UiState.SetMessage(Localization.Get("DeviceInfoLoaded"));
         }
         catch (Exception ex)
         {
             AppServices.Sessions.ClearPinOnError(ex);
-            UiState.SetError($"读取设备信息失败:{ex.Message}");
+            UiState.SetError(Localization.Format("DeviceInfoFailed", ex.Message));
         }
         finally
         {
@@ -81,27 +83,27 @@ public partial class DeviceInfoViewModel : ObservableObject
         }
         if (info.Options.ClientPin == true)
         {
-            yield return "PIN 已设置";
+            yield return Localization.Get("CapPinSet");
         }
         else if (info.Options.ClientPin == false)
         {
-            yield return "无 PIN";
+            yield return Localization.Get("CapNoPin");
         }
         if (info.Options.SupportsBioEnrollment)
         {
-            yield return "指纹";
+            yield return Localization.Get("CapFingerprint");
         }
         if (info.Options.SupportsCredentialManagement)
         {
-            yield return "凭据管理";
+            yield return Localization.Get("CapCredentialMgmt");
         }
         if (info.Options.AuthenticatorConfig == true)
         {
-            yield return "策略配置";
+            yield return Localization.Get("CapAuthnrConfig");
         }
         if (info.ForcePinChange)
         {
-            yield return "要求改 PIN";
+            yield return Localization.Get("CapForcePinChange");
         }
     }
 }

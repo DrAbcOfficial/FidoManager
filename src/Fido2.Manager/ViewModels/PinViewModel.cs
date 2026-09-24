@@ -14,7 +14,7 @@ public partial class PinViewModel : ObservableObject
 
     public PinViewModel()
     {
-        StateText = "选择设备后点击“检查”。";
+        StateText = Localization.Get("PinInitialState");
     }
 
     [ObservableProperty]
@@ -40,7 +40,8 @@ public partial class PinViewModel : ObservableObject
         var session = AppServices.Sessions.Current;
         if (session is null)
         {
-            await AppServices.PinDialog.NotifyAsync("提示", "请先选择设备。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("NotifyTitleHint"), Localization.Get("PromptSelectDeviceFirst")).ConfigureAwait(true);
             return;
         }
 
@@ -50,9 +51,9 @@ public partial class PinViewModel : ObservableObject
             var state = await session.GetPinStateAsync(CancellationToken.None).ConfigureAwait(true);
             HasPin = state.IsSet;
             StateText = state.IsSet
-                ? $"已设置 PIN。剩余重试:{state.RetriesRemaining}"
-                : "未设置 PIN。“当前 PIN”留空即为首次设置。";
-            UiState.SetMessage("PIN 状态已检查");
+                ? Localization.Format("PinSetWithRetries", state.RetriesRemaining)
+                : Localization.Get("PinNotSetFirstTime");
+            UiState.SetMessage(Localization.Get("PinStateChecked"));
         }
         catch (Exception ex)
         {
@@ -71,27 +72,31 @@ public partial class PinViewModel : ObservableObject
         var session = AppServices.Sessions.Current;
         if (session is null)
         {
-            await AppServices.PinDialog.NotifyAsync("提示", "请先选择设备。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("NotifyTitleHint"), Localization.Get("PromptSelectDeviceFirst")).ConfigureAwait(true);
             return;
         }
         if (!string.Equals(NewPin, ConfirmPin, StringComparison.Ordinal))
         {
-            await AppServices.PinDialog.NotifyAsync("PIN 不一致", "两次输入的新 PIN 不相同。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("PinMismatchTitle"), Localization.Get("PinMismatchMessage")).ConfigureAwait(true);
             return;
         }
         if (Encoding.UTF8.GetByteCount(NewPin) < 4)
         {
-            await AppServices.PinDialog.NotifyAsync("PIN 太短", "PIN 至少需要 4 个字节。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("PinTooShortTitle"), Localization.Get("PinTooShortMessage")).ConfigureAwait(true);
             return;
         }
         if (HasPin && string.IsNullOrEmpty(OldPin))
         {
-            await AppServices.PinDialog.NotifyAsync("缺少当前 PIN", "钥匙已设置 PIN,修改需要当前 PIN。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("PinCurrentRequiredTitle"), Localization.Get("PinCurrentRequiredMessage")).ConfigureAwait(true);
             return;
         }
 
         UiState.IsBusy = true;
-        UiState.SetMessage(HasPin ? "正在修改 PIN…" : "正在设置 PIN…");
+        UiState.SetMessage(Localization.Get(HasPin ? "ChangingPin" : "SettingPin"));
         try
         {
             if (HasPin)
@@ -104,7 +109,7 @@ public partial class PinViewModel : ObservableObject
             }
             AppServices.Sessions.ClearPin();
             OldPin = NewPin = ConfirmPin = "";
-            UiState.SetMessage(HasPin ? "PIN 已修改" : "PIN 已设置");
+            UiState.SetMessage(Localization.Get(HasPin ? "PinChanged" : "PinSet"));
             await CheckAsync().ConfigureAwait(true);
         }
         catch (Exception ex)

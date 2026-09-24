@@ -16,7 +16,7 @@ public partial class FingerprintsViewModel : ObservableObject
 
     public FingerprintsViewModel()
     {
-        EmptyText = "尚未加载。点击“列出” — 将需要 PIN。";
+        EmptyText = Localization.Get("BioNotLoaded");
     }
 
     public ObservableCollection<Fido2.Core.Ctap2.FingerprintEnrollment> Enrollments { get; } = [];
@@ -52,7 +52,7 @@ public partial class FingerprintsViewModel : ObservableObject
         }
         else
         {
-            SensorText = "这把钥匙没有指纹传感器(getInfo 未提供 bioEnroll)。";
+            SensorText = Localization.Get("NoBioSensor");
         }
     }
 
@@ -62,16 +62,17 @@ public partial class FingerprintsViewModel : ObservableObject
         var session = AppServices.Sessions.Current;
         if (session is null)
         {
-            await AppServices.PinDialog.NotifyAsync("提示", "请先选择设备。").ConfigureAwait(true);
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("NotifyTitleHint"), Localization.Get("PromptSelectDeviceFirst")).ConfigureAwait(true);
             return;
         }
         if (!session.Options.SupportsBioEnrollment)
         {
-            SensorText = "这把钥匙没有指纹传感器(getInfo 未提供 bioEnroll)。";
+            SensorText = Localization.Get("NoBioSensor");
             return;
         }
 
-        string? pin = await AppServices.PinDialog.GetPinAsync("列出指纹需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("BioListNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
@@ -87,8 +88,8 @@ public partial class FingerprintsViewModel : ObservableObject
                 Enrollments.Add(enrollment);
             }
             HasEnrollments = enrollments.Count > 0;
-            EmptyText = HasEnrollments ? "" : "这把钥匙上没有指纹。";
-            UiState.SetMessage($"共 {enrollments.Count} 枚指纹");
+            EmptyText = HasEnrollments ? "" : Localization.Get("NoFingerprints");
+            UiState.SetMessage(Localization.Format("FingerprintsListed", enrollments.Count));
         }
         catch (Exception ex)
         {
@@ -111,12 +112,12 @@ public partial class FingerprintsViewModel : ObservableObject
         }
 
         string? name = await AppServices.PinDialog.PromptTextAsync(
-            "录入指纹", "为这根手指命名(可选):").ConfigureAwait(true);
+            Localization.Get("EnrollTitle"), Localization.Get("EnrollNamePrompt")).ConfigureAwait(true);
         if (name is null)
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("录入指纹需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("EnrollNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
@@ -134,30 +135,30 @@ public partial class FingerprintsViewModel : ObservableObject
             return;
         }
 
-        var statusBar = new TextBlock { Text = "等待第一次触摸…" };
+        var statusBar = new TextBlock { Text = Localization.Get("EnrollWaitFirstTouch") };
         var progressBar = new ProgressBar { Minimum = 0, Maximum = 100, Value = 0 };
         var panel = new StackPanel
         {
             Spacing = 12,
             Children =
             {
-                new TextBlock { Text = "反复触摸传感器,直到录入完成。" },
+                new TextBlock { Text = Localization.Get("EnrollInstruction") },
                 progressBar,
                 statusBar,
             },
         };
         var dialog = new ContentDialog
         {
-            Title = "正在录入指纹",
+            Title = Localization.Get("EnrollingTitle"),
             Content = panel,
-            CloseButtonText = "取消",
+            CloseButtonText = Localization.Get("CommonCancel"),
             XamlRoot = root,
         };
         var cancellationTokenSource = new CancellationTokenSource();
         dialog.Closed += (_, _) => cancellationTokenSource.Cancel();
 
         IsEnrolling = true;
-        UiState.SetMessage("正在录入指纹…");
+        UiState.SetMessage(Localization.Get("Enrolling"));
         try
         {
             // Progress<T> is created on the UI thread, so callbacks arrive marshalled.
@@ -165,7 +166,9 @@ public partial class FingerprintsViewModel : ObservableObject
             var samples = new Progress<Fido2.Core.Ctap2.EnrollmentSample>(sample =>
             {
                 captured++;
-                statusBar.Text = $"{sample.StatusText} — 还需 {sample.RemainingSamples} 次";
+                string status = Localization.TryGet($"BioSample{sample.LastSampleStatus:X2}")
+                    ?? Localization.Get("BioSampleOther");
+                statusBar.Text = Localization.Format("SampleProgress", status, sample.RemainingSamples);
                 if (sample.RemainingSamples >= 0)
                 {
                     double total = captured + sample.RemainingSamples;
@@ -180,19 +183,19 @@ public partial class FingerprintsViewModel : ObservableObject
             {
                 if (status == KeepaliveStatus.UpNeeded)
                 {
-                    statusBar.Text = "请触摸传感器…";
+                    statusBar.Text = Localization.Get("TouchSensor");
                 }
             });
 
             _ = dialog.ShowAsync(); // modal, but we continue to run the enrollment
             var enrollment = await session.EnrollFingerprintAsync(pin, name, samples, touch, cancellationTokenSource.Token)
                 .ConfigureAwait(true);
-            UiState.SetMessage($"指纹已录入({enrollment.FriendlyName ?? enrollment.TemplateIdHex})");
+            UiState.SetMessage(Localization.Format("Enrolled", enrollment.FriendlyName ?? enrollment.TemplateIdHex));
             await ListAsyncCoreAsync(session, pin).ConfigureAwait(true);
         }
         catch (OperationCanceledException)
         {
-            UiState.SetMessage("录入已取消");
+            UiState.SetMessage(Localization.Get("EnrollCanceled"));
         }
         catch (Exception ex)
         {
@@ -218,7 +221,7 @@ public partial class FingerprintsViewModel : ObservableObject
                 Enrollments.Add(enrollment);
             }
             HasEnrollments = Enrollments.Count > 0;
-            EmptyText = HasEnrollments ? "" : "这把钥匙上没有指纹。";
+            EmptyText = HasEnrollments ? "" : Localization.Get("NoFingerprints");
         }
         catch
         {
@@ -234,12 +237,12 @@ public partial class FingerprintsViewModel : ObservableObject
             return;
         }
         string? name = await AppServices.PinDialog.PromptTextAsync(
-            "重命名指纹", "新名称:", enrollment.FriendlyName).ConfigureAwait(true);
+            Localization.Get("RenameTitle"), Localization.Get("RenamePrompt"), enrollment.FriendlyName).ConfigureAwait(true);
         if (string.IsNullOrWhiteSpace(name))
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("重命名需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("RenameNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
@@ -256,7 +259,7 @@ public partial class FingerprintsViewModel : ObservableObject
             await session.RenameFingerprintAsync(
                 pin, Convert.FromHexString(enrollment.TemplateIdHex), name, CancellationToken.None).ConfigureAwait(true);
             await ListAsyncCoreAsync(session, pin).ConfigureAwait(true);
-            UiState.SetMessage("已重命名");
+            UiState.SetMessage(Localization.Get("Renamed"));
         }
         catch (Exception ex)
         {
@@ -277,13 +280,13 @@ public partial class FingerprintsViewModel : ObservableObject
             return;
         }
         bool confirmed = await AppServices.PinDialog.ConfirmAsync(
-            "删除指纹",
-            $"删除这枚指纹?\n\n{(enrollment.FriendlyName ?? enrollment.TemplateIdHex)}\n\n此操作不可撤销。").ConfigureAwait(true);
+            Localization.Get("DeleteFingerprintTitle"),
+            Localization.Format("DeleteFingerprintConfirm", enrollment.FriendlyName ?? enrollment.TemplateIdHex)).ConfigureAwait(true);
         if (!confirmed)
         {
             return;
         }
-        string? pin = await AppServices.PinDialog.GetPinAsync("删除指纹需要 PIN。", AppServices.Sessions).ConfigureAwait(true);
+        string? pin = await AppServices.PinDialog.GetPinAsync(Localization.Get("DeleteFingerprintNeedPin"), AppServices.Sessions).ConfigureAwait(true);
         if (pin is null)
         {
             return;
@@ -301,8 +304,8 @@ public partial class FingerprintsViewModel : ObservableObject
                 pin, Convert.FromHexString(enrollment.TemplateIdHex), CancellationToken.None).ConfigureAwait(true);
             Enrollments.Remove(enrollment);
             HasEnrollments = Enrollments.Count > 0;
-            EmptyText = HasEnrollments ? "" : "这把钥匙上没有指纹。";
-            UiState.SetMessage("指纹已删除");
+            EmptyText = HasEnrollments ? "" : Localization.Get("NoFingerprints");
+            UiState.SetMessage(Localization.Get("FingerprintDeleted"));
         }
         catch (Exception ex)
         {

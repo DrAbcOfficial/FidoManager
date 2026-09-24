@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:views="using:Fido2.Manager.Views"
-    xmlns:services="using:Fido2.Manager.Services">
+    xmlns:services="using:Fido2.Manager.Services"
+    xmlns:local="using:Fido2.Manager">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -19,7 +20,7 @@
             <TextBlock x:Name="BannerText" Foreground="#8A6D3B" TextWrapping="Wrap" />
         </Border>
 
-        <!-- 设备选择行 -->
+        <!-- 设备选择行 + 语言切换 -->
         <Grid Grid.Row="1" Padding="12,8" ColumnSpacing="8"
               Background="{ThemeResource LayerFillColorDefaultBrush}">
             <Grid.ColumnDefinitions>
@@ -27,9 +28,11 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="设备:" VerticalAlignment="Center" />
+            <TextBlock x:Name="DeviceLabel" VerticalAlignment="Center" />
             <ComboBox Grid.Column="1"
                       ItemsSource="{x:Bind ViewModel.Devices}"
                       SelectedItem="{x:Bind ViewModel.SelectedDevice, Mode=TwoWay}"
@@ -42,8 +45,18 @@
             </ComboBox>
             <muxc:ProgressRing Grid.Column="2" Width="22" Height="22"
                                x:Name="BusyRing" IsActive="False" />
-            <Button Grid.Column="3" Content="刷新" Command="{x:Bind ViewModel.RefreshCommand}"
+            <Button Grid.Column="3" x:Name="RefreshButton" Command="{x:Bind ViewModel.RefreshCommand}"
                     Style="{ThemeResource AccentButtonStyle}" />
+            <TextBlock Grid.Column="4" x:Name="LanguageLabel" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="5" x:Name="LanguageCombo" Width="160"
+                      SelectionChanged="LanguageCombo_SelectionChanged"
+                      VerticalAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:LanguageOption">
+                        <TextBlock Text="{x:Bind Label}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
         <!-- 功能页 -->
@@ -53,12 +66,12 @@
                              IsSettingsVisible="False"
                              SelectionChanged="Nav_SelectionChanged">
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Content="设备信息" Tag="0" IsSelected="True" />
-                <muxc:NavigationViewItem Content="凭据" Tag="1" />
-                <muxc:NavigationViewItem Content="指纹" Tag="2" />
-                <muxc:NavigationViewItem Content="PIN" Tag="3" />
-                <muxc:NavigationViewItem Content="策略" Tag="4" />
-                <muxc:NavigationViewItem Content="恢复出厂" Tag="5" />
+                <muxc:NavigationViewItem x:Name="NavDeviceInfo" Tag="0" IsSelected="True" />
+                <muxc:NavigationViewItem x:Name="NavCredentials" Tag="1" />
+                <muxc:NavigationViewItem x:Name="NavFingerprints" Tag="2" />
+                <muxc:NavigationViewItem x:Name="NavPin" Tag="3" />
+                <muxc:NavigationViewItem x:Name="NavPolicy" Tag="4" />
+                <muxc:NavigationViewItem x:Name="NavReset" Tag="5" />
             </muxc:NavigationView.MenuItems>
 
             <Grid Padding="16,12">
@@ -73,7 +86,7 @@
 
         <!-- 状态条 -->
         <Border Grid.Row="3" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="12,4">
-            <TextBlock x:Name="StatusText" Text="就绪" TextWrapping="Wrap"
+            <TextBlock x:Name="StatusText" TextWrapping="Wrap"
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </Border>
     </Grid>
