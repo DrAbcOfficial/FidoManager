@@ -65,4 +65,26 @@ public static class CborMapExtensions
         y.CopyTo(blob, 8 + x.Length);
         return blob;
     }
+
+    /// <summary>
+    /// Normalizes a COSE EC2 coordinate to exactly 32 bytes (P-256 field width). Devices
+    /// occasionally strip leading zeros (short integer encoding) or over-pad; CNG rejects
+    /// both with "parameter invalid" on import. Left-pads after trimming excess zeros.
+    /// </summary>
+    public static byte[] ToCoordinate32(ReadOnlySpan<byte> coordinate)
+    {
+        int start = 0;
+        while (start < coordinate.Length - 1 && coordinate[start] == 0)
+        {
+            start++;
+        }
+        int length = coordinate.Length - start;
+        if (length > 32)
+        {
+            throw new FormatException("COSE EC2 coordinate exceeds the P-256 field width.");
+        }
+        var normalized = new byte[32];
+        coordinate.Slice(start, length).CopyTo(normalized.AsSpan(32 - length));
+        return normalized;
+    }
 }

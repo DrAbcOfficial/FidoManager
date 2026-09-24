@@ -128,7 +128,7 @@ public sealed class CtaphidChannel : IDisposable
                 throw new TransportException("CTAPHID sequence mismatch during INIT.");
             }
             sequence++;
-            payload.AddRange(readBuffer.AsSpan(5, Math.Min(_reportSizeIn - 5, length - payload.Count)).ToArray());
+            payload.AddRange(readBuffer.AsSpan(6, Math.Min(_reportSizeIn - 5, length - payload.Count)).ToArray());
         }
         return [.. payload.Take(length)];
     }
@@ -222,7 +222,10 @@ public sealed class CtaphidChannel : IDisposable
                 }
                 sequence++;
                 int remaining = expectedLength - response.Count;
-                response.AddRange(readBuffer.AsSpan(5, Math.Min(_reportSizeIn - 5, remaining)).ToArray());
+                // Continuation packet layout in the read buffer (report id at [0]):
+                // CID [1..4] | SEQ [5] | data [6..]. Reading from 5 splices the sequence
+                // byte into the payload and drops each packet's final data byte.
+                response.AddRange(readBuffer.AsSpan(6, Math.Min(_reportSizeIn - 5, remaining)).ToArray());
             }
 
             if (response.Count >= expectedLength)

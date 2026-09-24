@@ -15,8 +15,10 @@ public sealed class PinUvAuthProtocolOne : IPinUvAuthProtocol
 
     public byte[] GenerateSharedSecret(IReadOnlyDictionary<object, object?> authenticatorCoseKey, out CborMap platformCoseKey)
     {
-        byte[] x = authenticatorCoseKey.GetBytes(-2) ?? throw new FormatException("keyAgreement missing x");
-        byte[] y = authenticatorCoseKey.GetBytes(-3) ?? throw new FormatException("keyAgreement missing y");
+        byte[] x = CborMapExtensions.ToCoordinate32(
+            authenticatorCoseKey.GetBytes(-2) ?? throw new FormatException("keyAgreement missing x"));
+        byte[] y = CborMapExtensions.ToCoordinate32(
+            authenticatorCoseKey.GetBytes(-3) ?? throw new FormatException("keyAgreement missing y"));
 
         using var clientKey = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
         ECPoint q = clientKey.ExportParameters(false).Q;

@@ -6,7 +6,8 @@ namespace Fido2.Core.Pin;
 /// <summary>
 /// PIN/UV auth protocol v2: kdf(Z) = HKDF-SHA256 splits the raw shared point into an
 /// HMAC key and an AES key; AES-256-CBC with a random IV prepended to the ciphertext;
-/// MAC = full HMAC-SHA-256 with the HMAC key. Requires <see cref="ECDiffieHellman.DeriveRawSecretAgreement"/>
+/// MAC = left 16 bytes of HMAC-SHA-256 (CTAP 2.1 §6.5.7.4, same truncation as v1).
+/// Requires <see cref="ECDiffieHellman.DeriveRawSecretAgreement"/>
 /// (Windows-supported; this is the same capability gate the PS 5.1 reference hit).
 /// </summary>
 public sealed class PinUvAuthProtocolTwo : IPinUvAuthProtocol
@@ -20,8 +21,10 @@ public sealed class PinUvAuthProtocolTwo : IPinUvAuthProtocol
 
     public byte[] GenerateSharedSecret(IReadOnlyDictionary<object, object?> authenticatorCoseKey, out CborMap platformCoseKey)
     {
-        byte[] x = authenticatorCoseKey.GetBytes(-2) ?? throw new FormatException("keyAgreement missing x");
-        byte[] y = authenticatorCoseKey.GetBytes(-3) ?? throw new FormatException("keyAgreement missing y");
+        byte[] x = CborMapExtensions.ToCoordinate32(
+            authenticatorCoseKey.GetBytes(-2) ?? throw new FormatException("keyAgreement missing x"));
+        byte[] y = CborMapExtensions.ToCoordinate32(
+            authenticatorCoseKey.GetBytes(-3) ?? throw new FormatException("keyAgreement missing y"));
 
         using var clientKey = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
         ECPoint q = clientKey.ExportParameters(false).Q;
@@ -60,7 +63,9 @@ public sealed class PinUvAuthProtocolTwo : IPinUvAuthProtocol
 
     public byte[] Authenticate(byte[] key, ReadOnlySpan<byte> message)
     {
-        return HMACSHA256.HashData(key.AsSpan(0, 32), message);
+        Span<byte> mac = stackalloc byte[32];
+        HMACSHA256.HashData(key.AsSpan(0, 32), message, mac);
+        return mac[..16].ToArray();
     }
 
     public byte[] ValidateToken(byte[] token)

@@ -7,11 +7,11 @@ namespace Fido2.Core.Ctap2;
 /// the authoritative capability source — vendor config bits are not reliable across models
 /// (design doc §4.5) — and the UI enables/disables controls from these flags.
 ///
-/// Some preview firmwares (observed on Feitian 096e:0853) corrupt option names with control
-/// bytes ("credentialMgmtPreview" → "credential\x01gmtPreview"). Lookups therefore normalize
-/// each received key (letters/digits only) and match the known option set by subsequence,
-/// which tolerates inserted or dropped characters. Exact matches always win, and the known
-/// set is closed, so spec-conformant keys resolve exactly as before.
+/// Lookups normalize each received key (letters/digits only) and match the known option
+/// set by subsequence, tolerating inserted or dropped characters. This defense dates from
+/// a period when a host-side CTAPHID reassembly bug spliced sequence bytes into option
+/// names; exact matches always win and the known set is closed, so spec-conformant keys
+/// resolve exactly.
 /// </summary>
 public sealed class AuthenticatorOptions
 {
