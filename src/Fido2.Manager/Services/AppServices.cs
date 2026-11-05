@@ -10,6 +10,7 @@ public static class AppServices
     public static UiStateService UiState { get; } = new();
     public static SessionService Sessions { get; } = new();
     public static PinDialogService PinDialog { get; } = new();
+    public static ExportDialogService Export { get; } = new();
     public static MainViewModel Main { get; } = new();
     public static DeviceInfoViewModel DeviceInfo { get; } = new();
     public static CredentialsViewModel Credentials { get; } = new();

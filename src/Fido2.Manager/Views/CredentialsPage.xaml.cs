@@ -13,5 +13,7 @@ public sealed partial class CredentialsPage : UserControl
         InitializeComponent();
         ListButtonText.Text = Localization.Get("CredsListButton");
         DeleteButtonText.Text = Localization.Get("CredsDeleteButton");
+        ExportButtonText.Text = Localization.Get("CredsExportButton");
+        ToolTipService.SetToolTip(ExportButton, Localization.Get("ExportSshToolTip"));
     }
 }

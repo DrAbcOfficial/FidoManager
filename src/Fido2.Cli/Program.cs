@@ -12,7 +12,7 @@ internal static class Program
         {
             Console.OutputEncoding = Encoding.UTF8;
         }
-        catch (IOException)
+        catch (Exception)
         {
             // No console attached — leave the default encoding.
         }

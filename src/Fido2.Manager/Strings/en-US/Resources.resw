@@ -126,6 +126,21 @@
   <data name="DeleteCredentialNeedPin" xml:space="preserve"><value>Delete credential</value></data>
   <data name="DeletingCredential" xml:space="preserve"><value>Deleting…</value></data>
   <data name="CredentialDeleted" xml:space="preserve"><value>Deleted</value></data>
+  <data name="CredsExportButton" xml:space="preserve"><value>Export SSH key</value></data>
+  <data name="ExportSshToolTip" xml:space="preserve"><value>Copy or save this credential's public key for OpenSSH</value></data>
+  <data name="ExportSshTitle" xml:space="preserve"><value>OpenSSH public key</value></data>
+  <data name="ExportSshFingerprint" xml:space="preserve"><value>Fingerprint  {0}</value></data>
+  <data name="ExportSshHint" xml:space="preserve"><value>Add this line to authorized_keys on the server.</value></data>
+  <data name="ExportSshCopyButton" xml:space="preserve"><value>Copy</value></data>
+  <data name="ExportSshSaveButton" xml:space="preserve"><value>Save…</value></data>
+  <data name="ExportSshCopied" xml:space="preserve"><value>Public key copied</value></data>
+  <data name="ExportSshSaved" xml:space="preserve"><value>Saved to {0}</value></data>
+  <data name="ExportSshNoKeyTitle" xml:space="preserve"><value>No public key</value></data>
+  <data name="ExportSshNoKeyMessage" xml:space="preserve"><value>This authenticator did not return the credential's public key.</value></data>
+  <data name="ExportSshUnsupportedTitle" xml:space="preserve"><value>Cannot export</value></data>
+  <data name="ExportSshUnsupportedMessage" xml:space="preserve"><value>Only Ed25519 and P-256 credentials can be exported as OpenSSH keys.</value></data>
+  <data name="ExportSshWrongRp" xml:space="preserve"><value>This credential was created for {0}, not for SSH — OpenSSH will not look it up for SSH logins.</value></data>
+  <data name="ExportSshFileType" xml:space="preserve"><value>OpenSSH public key</value></data>
 
   <!-- Fingerprints page -->
   <data name="BioListButton" xml:space="preserve"><value>List</value></data>

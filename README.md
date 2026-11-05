@@ -10,11 +10,13 @@ Windows 桌面 FIDO2 安全钥匙管理工具，附带命令行工具 `fido2`。
 dotnet publish src\Fido2.Manager\Fido2.Manager.csproj -c Release -p:Platform=x64 -r win-x64
 ```
 
-命令行工具 `fido2.exe`(同样是 NativeAOT 单文件):
+命令行工具 `fido2.exe`(同样是 NativeAOT 单文件，发布到同一目录):
 
 ```cmd
-dotnet publish src\Fido2.Cli\Fido2.Cli.csproj -c Release -r win-x64
+dotnet publish src\Fido2.Cli\Fido2.Cli.csproj -c Release -r win-x64 -o src\Fido2.Manager\bin\x64\Release\net10.0-windows10.0.19041.0\win-x64\publish
 ```
+
+安装包与便携包会把 `fido2.exe` 放在与 `Fido2.Manager.exe` 相同的目录;需要全局命令时把该目录加入 `PATH` 即可。
 
 调试构建:
 

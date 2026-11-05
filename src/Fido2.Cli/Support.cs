@@ -124,14 +124,18 @@ internal static class PinSource
     /// <summary>Resolves the current PIN: --pin, then --pin-stdin, then an interactive prompt.</summary>
     public static string Require(CommandLine line, string purpose)
     {
-        if (line.Value(Options.Pin) is { } pin)
+        if (line.Value(Options.Pin) is { Length: > 0 } pin)
         {
             return pin;
         }
         if (line.Has(Options.PinStdin))
         {
             string? lineRead = Console.In.ReadLine();
-            return lineRead ?? throw new UsageException("--pin-stdin was given but stdin carried no line.");
+            if (string.IsNullOrEmpty(lineRead))
+            {
+                throw new UsageException("--pin-stdin was given but stdin carried no PIN.");
+            }
+            return lineRead;
         }
         return Prompt.Secret(purpose);
     }

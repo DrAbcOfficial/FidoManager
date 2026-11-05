@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Fido2.Core.Credentials;
 using Fido2.Core.Ctap2;
 using Fido2.Manager.Services;
 
@@ -34,6 +35,14 @@ public partial class CredentialsViewModel : ObservableObject
         : Microsoft.UI.Xaml.Visibility.Visible;
 
     partial void OnEmptyTextChanged(string value) => OnPropertyChanged(nameof(EmptyVisibility));
+
+    [ObservableProperty]
+    public partial ResidentCredential? SelectedCredential { get; set; }
+
+    /// <summary>Only a selected credential whose public key the key reported can be exported.</summary>
+    public bool CanExportSsh => SelectedCredential?.HasSshPublicKey == true;
+
+    partial void OnSelectedCredentialChanged(ResidentCredential? value) => OnPropertyChanged(nameof(CanExportSsh));
 
     public async Task OnSessionOpenedAsync() => await ListAsync().ConfigureAwait(true);
 
@@ -88,6 +97,36 @@ public partial class CredentialsViewModel : ObservableObject
         {
             UiState.IsBusy = false;
         }
+    }
+
+    /// <summary>
+    /// Exports the selected credential's public key as an OpenSSH sk-* line. The public key
+    /// was already returned by the enumeration that filled the list, so no new PIN prompt
+    /// is needed; credentials from preview firmware (no publicKey member) stay disabled.
+    /// </summary>
+    [RelayCommand]
+    private async Task ExportSshAsync(ResidentCredential? credential)
+    {
+        credential ??= SelectedCredential;
+        if (credential is null)
+        {
+            return;
+        }
+        if (credential.PublicKey is null)
+        {
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("ExportSshNoKeyTitle"), Localization.Get("ExportSshNoKeyMessage")).ConfigureAwait(true);
+            return;
+        }
+        if (!OpenSshPublicKey.TryFormat(credential, out string keyLine)
+            || !OpenSshPublicKey.TryGetFingerprint(credential.PublicKey, out string fingerprint))
+        {
+            await AppServices.PinDialog.NotifyAsync(
+                Localization.Get("ExportSshUnsupportedTitle"), Localization.Get("ExportSshUnsupportedMessage")).ConfigureAwait(true);
+            return;
+        }
+
+        await AppServices.Export.ShowOpenSshKeyAsync(credential, keyLine, fingerprint).ConfigureAwait(true);
     }
 
     [RelayCommand]

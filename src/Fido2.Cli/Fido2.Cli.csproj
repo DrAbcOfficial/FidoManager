@@ -22,4 +22,9 @@
     <ProjectReference Include="..\Fido2.Core\Fido2.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- 参数解析/选项集合是内部实现,只对测试程序集开放 -->
+    <InternalsVisibleTo Include="Fido2.Cli.Tests" />
+  </ItemGroup>
+
 </Project>

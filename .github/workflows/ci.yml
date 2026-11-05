@@ -61,11 +61,20 @@ jobs:
         shell: bash
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
 
-      - name: Publish (x64, NativeAOT single-file)
+      - name: Publish GUI (x64, NativeAOT single-file)
         run: >
           dotnet publish src/Fido2.Manager/Fido2.Manager.csproj
           -c Release -p:Platform=x64 -r win-x64
           -p:Version=$env:VERSION
+
+      # The CLI shares the GUI's publish folder so the portable zip and the installer
+      # pick fido2.exe up without extra packaging rules.
+      - name: Publish CLI (x64, NativeAOT single-file)
+        run: >
+          dotnet publish src/Fido2.Cli/Fido2.Cli.csproj
+          -c Release -r win-x64
+          -p:Version=$env:VERSION
+          -o $env:PUBLISH_DIR
 
       - name: Pack portable zip
         run: |

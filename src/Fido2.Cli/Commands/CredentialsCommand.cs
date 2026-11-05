@@ -84,6 +84,7 @@ internal static class CredentialsCommand
     public static async Task<int> ExportAsync(CommandLine line, CancellationToken cancellationToken)
     {
         line.EnsureOnly(ExportOptions);
+        ValidateSelectionOptions(line); // usage errors before touching the key
 
         string? outArgument = line.Value("out");
         string? outputPath = outArgument is null ? null : Path.GetFullPath(outArgument);
@@ -92,6 +93,10 @@ internal static class CredentialsCommand
             if (Directory.Exists(outputPath))
             {
                 throw new UsageException($"--out '{outArgument}' is a directory.");
+            }
+            if (Path.GetDirectoryName(outputPath) is { Length: > 0 } directory && !Directory.Exists(directory))
+            {
+                throw new UsageException($"directory '{directory}' does not exist.");
             }
             if (File.Exists(outputPath) && !line.Has("force"))
             {
@@ -204,8 +209,8 @@ internal static class CredentialsCommand
         }
     }
 
-    private static IReadOnlyList<ResidentCredential> SelectCredentials(
-        IReadOnlyList<ResidentCredential> credentials, CommandLine line)
+    /// <summary>Selector combinations that are contradictory are rejected up front.</summary>
+    private static void ValidateSelectionOptions(CommandLine line)
     {
         int? index = line.IntValue("index");
         string? id = line.Value("id");
@@ -217,6 +222,13 @@ internal static class CredentialsCommand
         {
             throw new UsageException("--all cannot be combined with --index/--id.");
         }
+    }
+
+    private static IReadOnlyList<ResidentCredential> SelectCredentials(
+        IReadOnlyList<ResidentCredential> credentials, CommandLine line)
+    {
+        int? index = line.IntValue("index");
+        string? id = line.Value("id");
         if (id is not null)
         {
             return [FindById(credentials, id)];

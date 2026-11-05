@@ -126,6 +126,21 @@
   <data name="DeleteCredentialNeedPin" xml:space="preserve"><value>删除凭据</value></data>
   <data name="DeletingCredential" xml:space="preserve"><value>正在删除…</value></data>
   <data name="CredentialDeleted" xml:space="preserve"><value>已删除</value></data>
+  <data name="CredsExportButton" xml:space="preserve"><value>导出 SSH 公钥</value></data>
+  <data name="ExportSshToolTip" xml:space="preserve"><value>复制或保存该凭据的 OpenSSH 公钥</value></data>
+  <data name="ExportSshTitle" xml:space="preserve"><value>OpenSSH 公钥</value></data>
+  <data name="ExportSshFingerprint" xml:space="preserve"><value>指纹  {0}</value></data>
+  <data name="ExportSshHint" xml:space="preserve"><value>把这一行加入服务器的 authorized_keys。</value></data>
+  <data name="ExportSshCopyButton" xml:space="preserve"><value>复制</value></data>
+  <data name="ExportSshSaveButton" xml:space="preserve"><value>保存…</value></data>
+  <data name="ExportSshCopied" xml:space="preserve"><value>公钥已复制</value></data>
+  <data name="ExportSshSaved" xml:space="preserve"><value>已保存到 {0}</value></data>
+  <data name="ExportSshNoKeyTitle" xml:space="preserve"><value>没有公钥</value></data>
+  <data name="ExportSshNoKeyMessage" xml:space="preserve"><value>该认证器没有返回此凭据的公钥。</value></data>
+  <data name="ExportSshUnsupportedTitle" xml:space="preserve"><value>无法导出</value></data>
+  <data name="ExportSshUnsupportedMessage" xml:space="preserve"><value>只有 Ed25519 与 P-256 凭据可以导出为 OpenSSH 公钥。</value></data>
+  <data name="ExportSshWrongRp" xml:space="preserve"><value>该凭据为 {0} 创建，并非 SSH —— OpenSSH 登录时不会查找它。</value></data>
+  <data name="ExportSshFileType" xml:space="preserve"><value>OpenSSH 公钥</value></data>
 
   <!-- 指纹页 -->
   <data name="BioListButton" xml:space="preserve"><value>列出</value></data>
