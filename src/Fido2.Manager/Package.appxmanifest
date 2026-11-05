@@ -6,7 +6,7 @@
 
   <Identity Name="Fido2.Manager"
             Publisher="CN=Fido2Manager"
-            Version="1.0.0.0" />
+            Version="1.1.0.0" />
 
   <Properties>
     <DisplayName>FIDO2 Manager</DisplayName>

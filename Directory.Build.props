@@ -6,5 +6,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <InvariantGlobalization>true</InvariantGlobalization>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <!-- 版本号的本地默认值;发布工作流会用标签传入的 -p:Version 覆盖它 -->
+    <Version>1.1.0</Version>
   </PropertyGroup>
 </Project>
