@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Fido2.Core.Cbor;
+using Fido2.Core.Credentials;
 using Fido2.Core.Pin;
 using Fido2.Core.Transports;
 
@@ -75,7 +76,11 @@ public sealed class CredentialManagementApi(Ctap2Connection connection, ClientPi
         return rps;
     }
 
-    /// <summary>Enumerates the discoverable credentials of one RP.</summary>
+    /// <summary>
+    /// Enumerates the discoverable credentials of one RP. CTAP 2.1 returns each credential's
+    /// public key as member 0x08 (needed for OpenSSH export); it is optional, so credentials
+    /// from preview firmware simply carry <see cref="ResidentCredential.PublicKey"/> = null.
+    /// </summary>
     public async Task<IReadOnlyList<ResidentCredential>> EnumerateCredentialsAsync(
         byte[] rpIdHash, CancellationToken cancellationToken, IProgress<KeepaliveStatus>? progress = null)
     {
@@ -152,7 +157,10 @@ public sealed class CredentialManagementApi(Ctap2Connection connection, ClientPi
             UserName: user?.GetText("name"),
             DisplayName: user?.GetText("displayName"),
             UserIdHex: user?.GetBytes("id") is { } id ? Convert.ToHexString(id).ToLowerInvariant() : null,
-            CredentialIdHex: descriptor?.GetBytes("id") is { } cid ? Convert.ToHexString(cid).ToLowerInvariant() : "");
+            CredentialIdHex: descriptor?.GetBytes("id") is { } cid ? Convert.ToHexString(cid).ToLowerInvariant() : "")
+        {
+            PublicKey = CosePublicKey.FromCbor(response.GetMap(8)),
+        };
     }
 
     private Task<IReadOnlyDictionary<object, object?>?> Send(

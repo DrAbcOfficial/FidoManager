@@ -1,3 +1,5 @@
+using Fido2.Core.Credentials;
+
 namespace Fido2.Core.Ctap2;
 
 /// <summary>getCredsMetadata result.</summary>
@@ -11,8 +13,18 @@ public sealed record ResidentCredential(
     string? UserIdHex,
     string CredentialIdHex)
 {
+    /// <summary>
+    /// The credential's public key (CTAP 2.1 enumerateCredentials member 0x08), when the
+    /// key supplies it. This is what makes an OpenSSH .pub export possible; preview
+    /// firmware and some CTAP 2.0 implementations omit it.
+    /// </summary>
+    public CosePublicKey? PublicKey { get; init; }
+
     /// <summary>UserName and DisplayName are optional per WebAuthn; fall back in order.</summary>
     public string BestUserName => UserName ?? DisplayName ?? CoreStrings.Unnamed;
+
+    /// <summary>Whether this credential can be rendered as an OpenSSH <c>sk-*</c> key.</summary>
+    public bool HasSshPublicKey => PublicKey?.SupportsOpenSsh == true;
 }
 
 /// <summary>One fingerprint enrollment.</summary>
